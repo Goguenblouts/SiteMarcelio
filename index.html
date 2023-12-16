@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Portfólio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #00202d;
+            text-align: center;
+            color: #3ca6a6;
+        }
+
+        header {
+            background-color: #00202d;
+            color: #f2e3d5;
+            text-align: center;
+            padding: 20px;
+        }
+
+        nav {
+            background-color: #3ca6a6;
+            padding: 10px;
+            text-align: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-gap: 10px;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        nav a::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #fff;
+            visibility: hidden;
+            transform: scaleX(0);
+            transition: all 0.5s ease-in-out;
+        }
+
+        nav a:hover::before {
+            visibility: visible;
+            transform: scaleX(1);
+        }
+
+        section {
+            padding: 20px;
+        }
+
+        footer {
+            font-family: mesa grande, sans-serif;
+            background-color: #3ca6a6;
+            color: #00202d;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .social-icons {
+            color: #ffffff;
+            /* Cor dos ícones */
+            font-size: 35px;
+            /* Tamanho dos ícones */
+            margin: 0 10px;
+            /* Espaçamento entre os ícones */
+        }
+
+        .category {
+            margin: 20px 0;
+            font-size: 20px;
+            flex: 1;
+            color: #f2e3d5;
+            text-align: center;
+        }
+
+        .category h2 {
+            color: #3ca6a6;
+        }
+
+        .category p {
+            color: #f2e3d5;
+        }
+
+        /* Seção SOBRE */
+
+        .category-sobre {
+            margin: 20px 0;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .item img {
+            margin: 10px;
+            margin-right: 60px;
+            padding: 10px;
+            background-color: #3ca6a6;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .content img {
+            flex-wrap: nowrap;
+            justify-content: center;
+        }
+
+        .category-sobre p {
+            font-size: 20px;
+            flex: 1;
+            color: #f2e3d5;
+            text-align: left;
+        }
+
+        .hover-image {
+            transition: opacity 0.5s ease-in-out;
+            /* Adiciona uma transição de 0,5 segundos com easing */
+        }
+
+        @media only screen and (max-width: 900px) {
+            .category-sobre {
+                flex-direction: column;
+                align-items: center;
+            }
+            .category-sobre h2,
+            .category-sobre p {
+                flex: 100%;
+                text-align: center;
+            }
+            .item img {
+                max-width: 35%;
+                justify-content: space-between;
+                margin: 0 15px;
+            }
+        }
+
+        @media only screen and (max-width: 500px) {
+            nav {
+                grid-template-columns: 1fr;
+            }
+            nav a {
+                margin: 5px;
+            }
+            .item {
+                flex: 1 0 100%;
+            }
+        }
+
+        /*Sessao sobre paragrafos*/
+
+        .category-sobre h2 {
+            font-size: 25px;
+            text-align: center;
+        }
+
+        .category-sobre .parag2 {
+            font-size: 20px;
+        }
+
+        #button {
+            background-color: #3ca6a6;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Adicione um estilo para o modal */
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 16, 24, 0.658);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .modal img {
+            max-width: 80%;
+            max-height: 80%;
+            border: 5px solid #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .links-section {
+            margin-top: 20px;
+            color: #fff;
+        }
+
+        .project-links {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .project-links li {
+            margin-bottom: 10px;
+        }
+
+        .project-links a {
+            text-decoration: none;
+            color: #3ca6a6;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .project-links a:hover {
+            color: #fff;
+        }
+
+        #myBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 99;
+            background-color: #fff;
+            /* Cor de fundo do círculo */
+            border: none;
+            border-radius: 50px;
+            /* Para criar um círculo */
+            padding: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            /* Sombra */
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            color: #3ca6a6;
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Who is Marcelio Venancio?</h1>
+        <p>Explorandor em Constante Evolução</p>
+    </header>
+
+    <nav>
+        <a href="#sobre">Sobre</a>
+        <a href="#fotografia">Fotografia</a>
+        <a href="#design">Design</a>
+        <a href="#webdev">Desenvolvimento Web</a>
+        <a href="#uxui">UX/UI Design</a>
+    </nav>
+
+    <section id="sobre" class="category-sobre">
+        <h2>A pergunta que não quer calar, que é Marcelo Venancio?</h2>
+        <p class="parag2" id="typed-text"></p>
+        <div class="content">
+            <div class="item">
+                <!-- Adicionei uma imagem representativa -->
+                <img class="hover-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/representativa.png?raw=true" alt="Imagem Representativa">
+                <img class="hover-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/representativa.png?raw=true" alt="Imagem Representativa">
+                <img class="hover-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/representativa.png?raw=true" alt="Imagem Representativa">
+                <img class="hover-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/representativa.png?raw=true" alt="Imagem Representativa">
+            </div>
+        </div>
+    </section>
+
+    <section id="fotografia" class="category">
+        <h2>Fotografia</h2>
+        <p>Minha jornada na fotografia começou como um simples hobby, mas logo se tornou uma paixão. Com o incentivo e orientação de amigos, embarquei em uma série de projetos fotográficos, incluindo aniversarios, casamentos, ensaios, noivados e muito mais.
+            Abaixo, você pode conferir alguns dos meus trabalhos mais destacados.</p>
+        <div class="content">
+            <div class="item">
+                <img class="hover-image" src="https://www.adobe.com/br/express/feature/image/media_1bb4d071398492506a1b76b3b6f9d69a5e96d7ffc.png?width=750&format=png&optimize=medium" alt="Imagem Representativa">
+                <img class="hover-image" src="https://www.adobe.com/br/express/feature/image/media_1bb4d071398492506a1b76b3b6f9d69a5e96d7ffc.png?width=750&format=png&optimize=medium" alt="Imagem Representativa">
+                <img class="hover-image" src="https://www.adobe.com/br/express/feature/image/media_1bb4d071398492506a1b76b3b6f9d69a5e96d7ffc.png?width=750&format=png&optimize=medium" alt="Imagem Representativa">
+                <img class="hover-image" src="https://www.adobe.com/br/express/feature/image/media_1bb4d071398492506a1b76b3b6f9d69a5e96d7ffc.png?width=750&format=png&optimize=medium" alt="Imagem Representativa">
+            </div>
+            <div class="item">Abaixo voce poderá ver meus trabalhos completos</div>
+        </div>
+
+        <button onclick="exibirInformacoes()" style=" border-radius:50px; background-color: #3ca6a6; color: #fff;
+        font-family: arial black, sans-serif; padding: 10px; border: none; cursor: pointer;">Ver Mais</button>
+
+
+        <!-- Adicione um div para conter as informações (inicialmente oculto) -->
+        <div id="informacoes" style="display:none;">
+            <!-- Adicione o conteúdo das informações aqui -->
+            <p>Informações sobre a fotografia...</p>
+            <p>Mais detalhes...</p>
+        </div>
+    </section>
+
+
+    <section id="design" class="category">
+        <h2>Design</h2>
+        <p>A paixão por desenhos feitos à mão cresceu exponencialmente, e à medida que a tecnologia avançava, o que começou como rabiscos nos cadernos da escola, com o incentivo do meu pai, que é um profissional renomado em design gráfico, transformou-se
+            em uma jornada rumo ao design digital. Essa trajetória me levou a explorar o vasto mundo do design gráfico, abrangendo a criação de logotipos, flyers, convites, imagens decorativas para quadros e uma infinidade de outros projetos criativos.
+            Ao longo desse percurso, tive a oportunidade de atender clientes de diversos estados, e isso se tornou possível graças às recomendações de amigos, que, satisfeitos com meu trabalho, não hesitaram em compartilhar com outros. Veja abaixo alguns
+            dos meus trabalhos mais notáveis.</p>
+        <div class="content">
+            <div class="item">
+                <img src="https://www.adobe.com/br/express/feature/image/media_1bb4d071398492506a1b76b3b6f9d69a5e96d7ffc.png?width=750&format=png&optimize=medium" alt="Imagem Representativa">
+                <img src="https://www.adobe.com/br/express/feature/image/media_1bb4d071398492506a1b76b3b6f9d69a5e96d7ffc.png?width=750&format=png&optimize=medium" alt="Imagem Representativa">
+                <img src="https://www.adobe.com/br/express/feature/image/media_1bb4d071398492506a1b76b3b6f9d69a5e96d7ffc.png?width=750&format=png&optimize=medium" alt="Imagem Representativa">
+                <img src="https://www.adobe.com/br/express/feature/image/media_1bb4d071398492506a1b76b3b6f9d69a5e96d7ffc.png?width=750&format=png&optimize=medium" alt="Imagem Representativa">
+                <img src="https://www.adobe.com/br/express/feature/image/media_1bb4d071398492506a1b76b3b6f9d69a5e96d7ffc.png?width=750&format=png&optimize=medium" alt="Imagem Representativa">
+                <img src="https://www.adobe.com/br/express/feature/image/media_1bb4d071398492506a1b76b3b6f9d69a5e96d7ffc.png?width=750&format=png&optimize=medium" alt="Imagem Representativa">
+                <img src="https://www.adobe.com/br/express/feature/image/media_1bb4d071398492506a1b76b3b6f9d69a5e96d7ffc.png?width=750&format=png&optimize=medium" alt="Imagem Representativa">
+                <img src="https://www.adobe.com/br/express/feature/image/media_1bb4d071398492506a1b76b3b6f9d69a5e96d7ffc.png?width=750&format=png&optimize=medium" alt="Imagem Representativa">
+            </div>
+            <div class="item">Conteúdo de design</div>
+            <div class="item">Conteúdo de design</div>
+        </div>
+    </section>
+
+    <section id="webdev" class="category">
+        <h2>Desenvolvimento Web</h2>
+        <p>Um projeto que teve origem a partir do incentivo de um amigo, cresceu de forma significativa em minha vida. Através de estudos online, adquiri conhecimentos em programação que foram aplicados em diversos aspectos do meu cotidiano, e agora vislumbro
+            a possibilidade de transformá-los em uma carreira promissora.</p>
+
+        <p>Atualmente, já executei diversos trabalhos que demandavam habilidades de desenvolvimento incluindo este proprio site. Estes projetos incluíram a criação de sites para armazenar fotografias de eventos e serem baixados pelos usuarios, elaboração
+            de convites de aniversário personalizados e até mesmo desenvolvimento de sites para empresas que oferecem serviços especializados.</p>
+
+        <p>Explore abaixo alguns exemplos desses trabalhos.</p>
+        <div class="content">
+            <div class="item">
+                <img class="hover-image expandable-image" src="https://www.adobe.com/br/express/feature/image/media_1bb4d071398492506a1b76b3b6f9d69a5e96d7ffc.png?width=750&format=png&optimize=medium" alt="Imagem Representativa 1">
+                <img class="hover-image expandable-image" src="https://www.adobe.com/br/express/feature/image/media_1bb4d071398492506a1b76b3b6f9d69a5e96d7ffc.png?width=750&format=png&optimize=medium" alt="Imagem Representativa 1">
+                <img class="hover-image expandable-image" src="https://mymodernmet.com/wp/wp-content/uploads/2021/12/kristina-makeeva-eoy-photo-1.jpeg" alt="Imagem Representativa 2">
+                <img class="hover-image expandable-image" src="https://img.freepik.com/fotos-gratis/rosas-vermelhas-na-janela-trouxeram-um-toque-de-romance-ao-quarto-generative-ai_8829-2925.jpg" alt="Imagem Representativa 3">
+            </div>
+            <div class="links-section">
+                <p>Confira alguns dos meus projetos:</p>
+                <ul class="project-links">
+                    <li><a href="https://goguenblouts.github.io/Convite-Digital/" target="_blank">Convite Digital</a></li>
+                    <li><a href="https://goguenblouts.github.io/ANIVERSARIO-HEITOR/" target="_blank">Site de Fotos de Aniversário</a></li>
+                    <li><a href="https://goguenblouts.github.io/AGEAP-ELETROPEL/" target="_blank">Site de Fotos de Eventos</a></li>
+                    <li><a href="https://goguenblouts.github.io/Barbearia-Corte-Arte/" target="_blank">Site Barbearia</a></li>
+                </ul>
+            </div>
+
+
+
+    </section>
+
+    <!-- Adicione o modal -->
+    <div class="modal" id="modalContainer">
+        <span class="close-button" onclick="closeModal()">&times;</span>
+        <img id="modalImage" src="" alt="Imagem Modal">
+    </div>
+    <section id="uxui" class="category">
+        <h2>UX/UI Design</h2>
+        <p>Abordando o mundo do UX/UI Design...</p>
+        <div class="content">
+            <div class="item">Conteúdo de UX/UI Design</div>
+            <div class="item">Conteúdo de UX/UI Design</div>
+            <div class="item">Conteúdo de UX/UI Design</div>
+        </div>
+    </section>
+    <button onclick="topFunction()" id="myBtn" title="Para o Topo"><i class="fas fa-arrow-up"></i></button>
+    <footer>
+        <p>Conecte-se nas redes sociais:</p>
+        <a href="https://www.facebook.com/marcelio.venancio.9" class="social-icons" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/marcelio_venancio/" class="social-icons" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.linkedin.com/in/marcelio-venancio-87a417254/" class="social-icons" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://wa.me/+5562986369673" class="social-icons" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    </footer>
+
+
+    <script>
+        function changeRandomImage(sectionId, imageUrls) {
+            const section = document.getElementById(sectionId);
+            const images = section.querySelectorAll('.hover-image');
+            const randomIndex = Math.floor(Math.random() * images.length);
+            const randomImage = images[randomIndex];
+
+            randomImage.style.opacity = '0';
+
+            setTimeout(() => {
+                randomImage.src = getRandomImageUrl(imageUrls);
+                randomImage.style.opacity = '1';
+            }, 500);
+        }
+
+        function getRandomImageUrl(imageUrls) {
+            const randomIndex = Math.floor(Math.random() * imageUrls.length);
+            return imageUrls[randomIndex];
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Adicione a troca automática de imagem a cada 3 segundos para a seção "sobre"
+            const sobreImageUrls = [
+                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img2.png?raw=true',
+                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img3.png?raw=true',
+                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img4.png?raw=true',
+                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img5.png?raw=true',
+                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img6.png?raw=true',
+                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img7.png?raw=true',
+                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img8.png?raw=true',
+                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img9.png?raw=true',
+                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img10.png?raw=true',
+                // Adicione mais URLs conforme necessário
+            ];
+
+            setInterval(() => changeRandomImage('sobre', sobreImageUrls), 3000);
+
+            // Adicione a troca automática de imagem a cada 3 segundos para a seção "fotografia"
+            const fotografiaImageUrls = [
+                'https://www.adobe.com/br/express/feature/image/media_1bb4d071398492506a1b76b3b6f9d69a5e96d7ffc.png?width=750&format=png&optimize=medium',
+                'https://mymodernmet.com/wp/wp-content/uploads/2021/12/kristina-makeeva-eoy-photo-1.jpeg',
+                'https://img.freepik.com/fotos-gratis/rosas-vermelhas-na-janela-trouxeram-um-toque-de-romance-ao-quarto-generative-ai_8829-2925.jpg',
+                // Adicione mais URLs conforme necessário
+            ];
+
+            setInterval(() => changeRandomImage('fotografia', fotografiaImageUrls), 3000);
+
+            // Adicione mais seções conforme necessário
+        });
+
+        // Adicionando o script para o efeito de digitação automática
+        document.addEventListener('DOMContentLoaded', function() {
+            const typedTextElement = document.getElementById('typed-text');
+            const originalText = "Seja bem-vindo ao meu site! Aqui, você terá a oportunidade de explorar e apreciar meus trabalhos em diversas áreas, incluindo fotografia, design gráfico, desenvolvimento web e design UX/UI. Espero que goste do que vê e fique à vontade para entrar em contato se tiver alguma dúvida ou comentário. Aproveite a visita!";
+
+            let index = 0;
+
+            function type() {
+                typedTextElement.innerHTML += originalText[index];
+                index++;
+
+                if (index < originalText.length) {
+                    setTimeout(type, 30); // Ajuste o tempo conforme necessário
+                }
+            }
+
+            type();
+        });
+    </script>
+
+    <script>
+        // Função para exibir as informações quando o botão for clicado
+        function exibirInformacoes() {
+            // Obtém o elemento div das informações
+            var informacoesDiv = document.getElementById("informacoes");
+
+            // Alterna a visibilidade (exibe/oculta)
+            if (informacoesDiv.style.display === "none") {
+                informacoesDiv.style.display = "block";
+            } else {
+                informacoesDiv.style.display = "none";
+            }
+        }
+    </script>
+    <script>
+        // Adicione a função para exibir o modal
+        function showModal(imageUrl) {
+            const modalContainer = document.getElementById('modalContainer');
+            const modalImage = document.getElementById('modalImage');
+
+            modalImage.src = imageUrl;
+            modalContainer.style.display = 'flex';
+        }
+
+        // Adicione a função para fechar o modal
+        function closeModal() {
+            const modalContainer = document.getElementById('modalContainer');
+            modalContainer.style.display = 'none';
+        }
+
+        // Adicione um evento de clique para cada imagem
+        const expandableImages = document.querySelectorAll('.expandable-image');
+        expandableImages.forEach(image => {
+            image.addEventListener('click', () => showModal(image.src));
+        });
+    </script>
+    <script>
+        // Quando o usuário rola a página, mostra o botão
+        window.onscroll = function() {
+            scrollFunction()
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("myBtn").style.display = "block";
+            } else {
+                document.getElementById("myBtn").style.display = "none";
+            }
+        }
+
+        // Quando o usuário clica no botão, rola para o topo do documento
+        function topFunction() {
+            document.body.scrollTop = 0; // Para o Safari
+            document.documentElement.scrollTop = 0; // Para Chrome, Firefox, IE e Opera
+        }
+    </script>
+</body>
+
+</html>

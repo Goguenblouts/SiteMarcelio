@@ -150,10 +150,6 @@
                 justify-content: space-between;
                 margin: 0 15px;
             }
-            .item-video {
-            width: auto;
-
-        }
         }
 
         @media only screen and (max-width: 500px) {
@@ -166,10 +162,6 @@
             .item {
                 flex: 1 0 100%;
             }
-            .item-video {
-            width: auto;
-
-        }
         }
 
         /*Sessao sobre paragrafos*/
@@ -279,9 +271,17 @@
         }
 
         .item-video {
-            width: auto;
+    max-width: 100%;  /* Garante que o vídeo não ultrapasse a largura do contêiner pai */
+    margin: 0 auto;   /* Centraliza o vídeo horizontalmente */
+}
 
-        }
+/* Adiciona um estilo específico para o vídeo dentro da div .item-video */
+.item-video video {
+    width: 100%;      /* Garante que o vídeo ocupe 100% da largura disponível */
+    height: auto;     /* Mantém a proporção original do vídeo */
+    display: block;   /* Remove margens indesejadas adicionadas por padrão para elementos 'inline' */
+}
+
     </style>
 </head>
 

@@ -1,644 +1,760 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-HHVCGJ46FE"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-HHVCGJ46FE');
-</script>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1301093286791067"
-     crossorigin="anonymous"></script>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <title>Portfólio</title>
+    <title>Marcelio Venancio | Portfólio Multidisciplinar</title>
+    <!-- Carrega Tailwind CSS CDN para estilização moderna e responsiva -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Define a fonte Inter (padrão Tailwind) e personaliza as cores -->
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+        :root {
+            --color-primary: #0f172a; /* Slate-900 */
+            --color-secondary: #0e7490; /* Cyan-700 */
+            --color-accent: #22d3ee; /* Cyan-400 */
+            --color-text: #f1f5f9; /* Slate-100 */
+            --color-card: #1e293b; /* Slate-800 */
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background-color: #00202d;
-            text-align: center;
-            color: #3ca6a6;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-primary);
+            color: var(--color-text);
+            scroll-behavior: smooth;
         }
 
-        header {
-            background-color: #00202d;
-            color: #f2e3d5;
-            text-align: center;
-            padding: 20px;
+        /* Efeito de gradiente sutil para o fundo do Hero */
+        .hero-background {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #1e293b 50%, var(--color-primary) 100%);
+            background-size: 400% 400%;
+            animation: gradient-animation 15s ease infinite;
         }
 
-        nav {
-            background-color: #3ca6a6;
-            padding: 10px;
-            text-align: center;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            grid-gap: 10px;
-            justify-content: center;
+        @keyframes gradient-animation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px;
-            font-weight: bold;
+        /* Classe para rolagem suave do topo */
+        .scroll-to-top-btn {
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 12px rgba(34, 211, 238, 0.5);
+        }
+        
+        /* Estilo para a imagem no modal, garantindo visualização em diferentes tamanhos */
+        #modalImage {
+            max-width: 90vw;
+            max-height: 90vh;
+            width: auto;
+            height: auto;
+        }
+
+        /* Garante que o vídeo se ajuste ao container */
+        .video-container {
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio (9/16 = 0.5625) */
             position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem; /* rounded-xl */
         }
 
-        nav a::before {
-            content: "";
+        .video-container video {
             position: absolute;
-            width: 100%;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: #fff;
-            visibility: hidden;
-            transform: scaleX(0);
-            transition: all 0.5s ease-in-out;
-        }
-
-        nav a:hover::before {
-            visibility: visible;
-            transform: scaleX(1);
-        }
-
-        section {
-            padding: 20px;
-        }
-
-        footer {
-            font-family: mesa grande, sans-serif;
-            background-color: #3ca6a6;
-            color: #00202d;
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        .social-icons {
-            color: #ffffff;
-            /* Cor dos ícones */
-            font-size: 35px;
-            /* Tamanho dos ícones */
-            margin: 0 10px;
-            /* Espaçamento entre os ícones */
-        }
-
-        .category {
-            margin: 75px 0;
-            font-size: 20px;
-            flex: 1;
-            color: #f2e3d5;
-            text-align: center;
-        }
-
-        .category h2 {
-            color: #3ca6a6;
-        }
-
-        .category p {
-            color: #f2e3d5;
-        }
-
-        /* Seção SOBRE */
-
-        .category-sobre {
-            margin: 20px 0;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .item img {
-            margin: 10px;
-            margin-right: 60px;
-            padding: 10px;
-            background-color: #3ca6a6;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
-
-        .item-ux img {
-            margin: 5px;
-            margin-right: 60px;
-            padding: 10px;
-            background-color: #3ca6a6;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 100%; 
-            width: 90%;
-        }
-
-        .content img {
-            flex-wrap: nowrap;
-            justify-content: center;
-        }
-
-        .category-sobre p {
-            font-size: 20px;
-            flex: 1;
-            color: #f2e3d5;
-            text-align: left;
-        }
-
-        .hover-image {
-            transition: opacity 0.5s ease-in-out;
-            /* Adiciona uma transição de 0,5 segundos com easing */
-        }
-
-        @media only screen and (max-width: 900px) {
-            .category-sobre {
-                flex-direction: column;
-                align-items: center;
-            }
-            .category-sobre h2,
-            .category-sobre p {
-                flex: 100%;
-                text-align: center;
-            }
-            .item img {
-                max-width: 35%;
-                justify-content: space-between;
-                margin: 0 15px;
-            }
-        }
-
-        @media only screen and (max-width: 500px) {
-            nav {
-                grid-template-columns: 1fr;
-            }
-            nav a {
-                margin: 5px;
-            }
-            .item {
-                flex: 1 0 100%;
-            }
-        }
-
-        /*Sessao sobre paragrafos*/
-
-        .category-sobre h2 {
-            font-size: 25px;
-            text-align: center;
-        }
-
-        .category-sobre .parag2 {
-            font-size: 20px;
-        }
-
-        #button {
-            background-color: #3ca6a6;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-        }
-
-        /* Adicione um estilo para o modal */
-
-        .modal {
-            display: none;
-            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 16, 24, 0.658);
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
+            object-fit: cover;
         }
 
-        .modal img {
-            max-width: 80%;
-            max-height: 80%;
-            border: 5px solid #fff;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        /* Custom Styles for Scrollable Carousel */
+        .carousel-container {
+            display: flex;
+            overflow-x: scroll;
+            gap: 2rem; /* gap-8 */
+            padding-bottom: 1rem; /* Space for scrollbar and breathing room */
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch; /* iOS smooth scrolling */
+        }
+        
+        /* Custom Scrollbar for modern look */
+        .carousel-container::-webkit-scrollbar {
+            height: 12px;
         }
 
-        .close-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: #fff;
-            font-size: 24px;
-            cursor: pointer;
+        .carousel-container::-webkit-scrollbar-thumb {
+            background-color: var(--color-secondary); /* Cyan-700 */
+            border-radius: 6px;
+            border: 3px solid var(--color-primary);
         }
 
-        .links-section {
-            margin-top: 20px;
-            color: #fff;
+        .carousel-container::-webkit-scrollbar-track {
+            background: var(--color-card);
+            border-radius: 6px;
         }
 
-        .project-links {
-            list-style-type: none;
-            padding: 0;
+        /* Responsive width for carousel items */
+        .project-card.carousel-item {
+            flex: 0 0 85vw; /* Default width for mobile (85% of viewport width) */
+            scroll-snap-align: start;
         }
-
-        .project-links li {
-            margin-bottom: 10px;
+        /* Responsiveness for carousel items */
+        @media (min-width: 640px) { /* sm */
+            .project-card.carousel-item {
+                flex: 0 0 45vw; /* 45% of viewport width on tablets */
+            }
         }
-
-        .project-links a {
-            text-decoration: none;
-            color: #3ca6a6;
-            font-weight: bold;
-            transition: color 0.3s ease;
+        @media (min-width: 1024px) { /* lg */
+            .project-card.carousel-item {
+                flex: 0 0 300px; /* Fixed width for desktop cards */
+            }
         }
-
-        .project-links a:hover {
-            color: #fff;
-        }
-
-        #myBtn {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 30px;
-            z-index: 99;
-            background-color: #fff;
-            /* Cor de fundo do círculo */
-            border: none;
-            border-radius: 50px;
-            /* Para criar um círculo */
-            padding: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            /* Sombra */
-            cursor: pointer;
-            width: 50px;
-            height: 50px;
-            color: #3ca6a6;
-            font-size: 30px;
-        }
-
-        .Design-paragraf {
-            font-family: arial black, sans-serif;
-            text-shadow: 0 2px #3ca6a6;
-            font-size: 24px;
-            background-color:#3ca6a6;
-            
-
-
-        }
-
-        .item-video {
-    max-width: 100%;  /* Garante que o vídeo não ultrapasse a largura do contêiner pai */
-    margin: 0 auto;   /* Centraliza o vídeo horizontalmente */
-}
-
-/* Adiciona um estilo específico para o vídeo dentro da div .item-video */
-.item-video video {
-    width: 100%;      /* Garante que o vídeo ocupe 100% da largura disponível */
-    height: auto;     /* Mantém a proporção original do vídeo */
-    display: block;   /* Remove margens indesejadas adicionadas por padrão para elementos 'inline' */
-}
 
     </style>
 </head>
 
 <body>
 
-    <header>
-        <h1>Quem é Marcelio Venancio?</h1>
-        <p>Explorandor em Constante Evolução</p>
+    <!-- Ícones Font Awesome para uso geral -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+
+    <!-- HEADER & NAVEGAÇÃO FIXA (Sticky) -->
+    <header class="sticky top-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-cyan-800/50 shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo/Nome -->
+                <a href="#home" class="text-2xl font-bold tracking-wider text-cyan-400 hover:text-cyan-300 transition duration-300">
+                    Marcelio.Dev
+                </a>
+                <!-- Navegação Principal -->
+                <nav class="flex space-x-4 sm:space-x-6">
+                    <a href="#sobre" class="nav-link text-gray-300 hover:text-cyan-400 transition-colors duration-300 relative group py-2">Sobre
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-cyan-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                    </a>
+                    <a href="#servicos" class="nav-link text-gray-300 hover:text-cyan-400 transition-colors duration-300 relative group py-2">Serviços
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-cyan-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                    </a>
+                    <a href="#contato" class="nav-link text-gray-300 hover:text-cyan-400 transition-colors duration-300 relative group py-2">Contato
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-cyan-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                    </a>
+                </nav>
+            </div>
+        </div>
     </header>
 
-    <nav>
-        <a href="#sobre">Sobre</a>
-        <a href="#fotografia">Fotografia</a>
-        <a href="#design">Design</a>
-        <a href="#webdev">Desenvolvimento Web</a>
-        <a href="#uxui">UX/UI Design</a>
-    </nav>
-
-    <section id="sobre" class="category-sobre">
-        <h2>A pergunta que não quer calar, quem é Marcelio Venancio?</h2>
-        <p class="parag2" id="typed-text"></p>
-        <div class="content">
-            <div class="item">
-                <!-- Adicionei uma imagem representativa -->
-                <img class="hover-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/representativa.png?raw=true" alt="Imagem Representativa">
-                <img class="hover-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/representativa.png?raw=true" alt="Imagem Representativa">
-                <img class="hover-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/representativa.png?raw=true" alt="Imagem Representativa">
-                <img class="hover-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/representativa.png?raw=true" alt="Imagem Representativa">
-            </div>
-        </div>
-    </section>
-
-    <section id="fotografia" class="category">
-        <h2>Fotografia</h2>
-        <p>Minha jornada na fotografia começou como um simples hobby, mas logo se tornou uma paixão. Com o incentivo e orientação de amigos, embarquei em uma série de projetos fotográficos, incluindo aniversarios, casamentos, ensaios, noivados e muito mais.
-            Abaixo, você pode conferir alguns dos meus trabalhos mais destacados.</p>
-        <div class="content">
-            <div class="item">
-                <img class="hover-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/representativa%201.png?raw=true" alt="Imagem Representativa">
-                <img class="hover-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/representativa%202.png?raw=true" alt="Imagem Representativa">
-                <img class="hover-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/representativa%203.png?raw=true" alt="Imagem Representativa">
-            </div>
-            <div class="item">Veja meus trabalhos completos clicando abaixo</div>
-        </div>
-
-        <button onclick="exibirInformacoes()" style=" border-radius:50px; background-color: #3ca6a6; color: #fff;
-        font-family: arial black, sans-serif; padding: 10px; border: none; cursor: pointer;">Ver Mais</button>
-
-
-        <!-- Adicione um div para conter as informações (inicialmente oculto) -->
-        <div id="informacoes" style="display:none;">
-            <!-- Adicione o conteúdo das informações aqui -->
-            <p>Ao clicar em quaisquer imagens, voce será redirecionado para o meu Drive onde estão armazenados os meus trabalhos de fotografia!</p>
-   <!-- Adicione as imagens com links para o Google Drive -->
-   <a href="https://drive.google.com/drive/folders/1-EyzfSBa7ZdDsHFvyg1YDoQJ3uD5l1gm?usp=drive_link" target="_blank">
-    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Tag%20Ver%20Mais/tema1.png?raw=true" alt="Pre Weddind Dayane" style="width: 30%; max-width: 500px; border-radius: 40px; border: 5px solid #3ca6a6;"></a>
-
-    <a href="https://drive.google.com/drive/folders/1dMNOTkJzc7gwmm2iVUoCOJX6rJegEr1f?usp=drive_link" target="_blank">
-    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Tag%20Ver%20Mais/tema2.png?raw=true" alt="Ensaio Paula" style="width: 30%; max-width: 500px; border-radius: 40px; border: 5px solid #3ca6a6"></a>
-
-    <a href="https://drive.google.com/drive/folders/1-0vhK_hYvZdSn2lKGuIZlnX_GlhRMZib?usp=drive_link" target="_blank">
-    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Tag%20Ver%20Mais/tema3.png?raw=true" alt="Casorio Renata e Bruno" style="width: 30%; max-width: 500px; border-radius: 40px; border: 5px solid #3ca6a6"></a>
-
-    <a href="https://drive.google.com/drive/folders/1K0BjFmHXIJoJSQSpdcRFIHsqy_vtgjyF?usp=drive_link" target="_blank">
-    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Tag%20Ver%20Mais/tema4.png?raw=true" alt="Casorio Rafa e Iza" style="width: 30%; max-width: 500px; border-radius: 40px; border: 5px solid #3ca6a6"></a>
-
-    <a href="https://drive.google.com/drive/folders/1-6z6jZ3UPZbeFnM-yDSVf5Gv46R3lN5e?usp=drive_link" target="_blank">
-    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Tag%20Ver%20Mais/tema5.png?raw=true" alt="Casorio Amarriete" style="width: 30%; max-width: 500px; border-radius: 40px; border: 5px solid #3ca6a6"></a>
-
-    <a href="https://drive.google.com/drive/folders/10t747-mXp7H2sMgoy3FPInt_GK-tPPAA?usp=drive_link" target="_blank">
-    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Tag%20Ver%20Mais/tema6.png?raw=true" alt="Nova Identidade" style="width: 30%; max-width: 500px; border-radius: 40px; border: 5px solid #3ca6a6"></a>
-
-    <a href="https://drive.google.com/drive/folders/1-RyuZ_sLREUdbqTS4-zuyPfnzG2RlmHc?usp=drive_link" target="_blank">
-        <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Tag%20Ver%20Mais/tema7.png?raw=true" alt="Aniversario Ro" style="width: 30%; max-width: 500px; border-radius: 40px; border: 5px solid #3ca6a6"></a>
-
-        <a href="https://drive.google.com/drive/folders/1kTd0ZCXVrFhroumbRwg2mmfH8mLRXxU-?usp=drive_link" target="_blank">
-            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Tag%20Ver%20Mais/tema8.png?raw=true" alt="Arraia Ro" style="width: 30%; max-width: 500px; border-radius: 40px; border: 5px solid #3ca6a6"></a>
-
-            <a href="https://drive.google.com/drive/folders/11fh2TpDt8JjKG-qxutDFNRhSL0467I1b?usp=drive_link" target="_blank">
-                <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Tag%20Ver%20Mais/tema9.png?raw=true" alt="Fotografias MArcelio" style="width: 30%; max-width: 500px; border-radius: 40px; border: 5px solid #3ca6a6"></a>
-    
-
-        </div>
-    </section>
-
-
-    <section id="design" class="category">
-        <h2>Design</h2>
-        <p>A paixão por desenhos feitos à mão cresceu exponencialmente, e à medida que a tecnologia avançava, o que começou como rabiscos nos cadernos da escola, com o incentivo do meu pai, que é um profissional renomado em design gráfico, transformou-se
-            em uma jornada rumo ao design digital. Essa trajetória me levou a explorar o vasto mundo do design gráfico, abrangendo a criação de logotipos, flyers, convites, imagens decorativas para quadros e uma infinidade de outros projetos criativos.
-            Ao longo desse percurso, tive a oportunidade de atender clientes de diversos estados, e isso se tornou possível graças às recomendações de amigos, que, satisfeitos com meu trabalho, não hesitaram em compartilhar com outros. Veja abaixo alguns
-            dos meus trabalhos mais notáveis.</p>
-        <div class="content">
-            <div class="item">
-                <p class="Design-paragraf">Logomarcas</p>
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/logos/logo%201.jpg?raw=true" alt="Carcara go">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/logos/logo%202.png?raw=true" alt="Drink's 7 Copas">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/logos/logo%203.png?raw=true" alt="Top Fit Academia">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/logos/logo%204.png?raw=true" alt="Bethel">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/logos/logo%205.jpg?raw=true" alt="Burguer House">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/logos/logo%206.png?raw=true" alt="Gtt Burguer">
-
-
-                <p class="Design-paragraf">Flyers</p>
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Flyers/flyers%20(1).jpeg?raw=true" alt="Flyer 1">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Flyers/flyers%20(1).jpg?raw=true" alt="Flyer 2">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Flyers/flyers%20(2).jpeg?raw=true" alt="Flyer 3">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Flyers/flyers%20(2).jpg?raw=true" alt="Flyer 4">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Flyers/flyers%20(3).jpeg?raw=true" alt="Flyer 5">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Flyers/flyers%20(3).jpg?raw=true" alt="Flyer 6">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Flyers/flyers%20(4).png?raw=true" alt="Flyer 7">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Flyers/flyers%20(5).png?raw=true" alt="Flyer 8">
-
-
-                <p class="Design-paragraf">Quadros Decorativos</p>
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%201%20(1).jpg?raw=true" alt="Quadros 1">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%201%20(2).jpg?raw=true" alt="Quadros 1">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%201%20(3).jpg?raw=true" alt="Quadros 1">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%201%20(4).jpg?raw=true" alt="Quadros 1">
-
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%202%20(1).jpg?raw=true" alt="Quadros 2">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%202%20(2).jpg?raw=true" alt="Quadros 2">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%202%20(3).jpg?raw=true" alt="Quadros 2">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%202%20(4).jpg?raw=true" alt="Quadros 2">
+    <main class="min-h-screen">
+        <!-- SEÇÃO HERO - TELA INICIAL (Diferenciado e Interativo) -->
+        <section id="home" class="hero-background min-h-[85vh] flex items-center justify-center p-4 py-20 border-b border-gray-800">
+            <div class="text-center max-w-4xl mx-auto">
+                <p class="text-lg sm:text-xl text-cyan-400 font-medium mb-3 uppercase tracking-widest">
+                    Marcelio Venancio | Explorador em Constante Evolução
+                </p>
+                <h1 class="text-5xl sm:text-7xl lg:text-8xl font-extrabold text-white leading-tight mb-6">
+                    Desenvolvedor <span class="text-cyan-400">&</span> Designer
+                </h1>
+                <!-- Efeito de Digitação Aprimorado -->
+                <div class="mt-8">
+                    <span id="typed-text" class="text-xl sm:text-2xl font-light text-gray-300 min-h-[30px] inline-block"></span>
+                    <span class="typing-cursor">|</span>
+                </div>
                 
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%203%20(1).jpg?raw=true" alt="Quadros 3">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%203%20(2).jpg?raw=true" alt="Quadros 3">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%203%20(3).jpg?raw=true" alt="Quadros 3">
+                <div class="mt-12 flex justify-center space-x-4">
+                    <a href="#servicos" class="inline-block px-8 py-3 bg-cyan-600 text-white font-semibold rounded-full shadow-lg hover:bg-cyan-500 transition-all duration-300 transform hover:scale-105">
+                        Ver Projetos
+                    </a>
+                    <a href="https://wa.me/+5562986369673" target="_blank" class="inline-block px-8 py-3 border border-cyan-600 text-cyan-400 font-semibold rounded-full hover:bg-cyan-600 hover:text-white transition-all duration-300 transform hover:scale-105">
+                        Fale Comigo
+                    </a>
+                </div>
+            </div>
+        </section>
 
-                <p class="Design-paragraf">Camisas</p>
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Camisas/Camisa.png?raw=true" alt="Camisa">
+        <!-- SEÇÃO SOBRE -->
+        <section id="sobre" class="py-20 px-4 max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-12 text-cyan-400">Quem é Marcelio Venancio?</h2>
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                
+                <!-- Coluna de Imagens (Galeria Rotativa) -->
+                <div class="md:w-1/3 flex-shrink-0 relative h-96 w-full md:w-96">
+                    <div id="image-gallery-container" class="w-full h-full relative rounded-xl overflow-hidden shadow-2xl border-4 border-cyan-700/50">
+                        <!-- As imagens serão adicionadas e trocadas via JS aqui -->
+                    </div>
+                </div>
+
+                <!-- Coluna de Texto -->
+                <div class="md:w-2/3 text-lg space-y-6 text-gray-300">
+                    <p>
+                        Minha jornada é marcada pela fusão entre a **criatividade visual** e a **lógica funcional**. O que começou com rabiscos e paixão pela fotografia, evoluiu para um domínio abrangente que inclui o Design Gráfico, o Desenvolvimento Web e o Design UX/UI.
+                    </p>
+                    <p>
+                        Sou um profissional multidisciplinar, capaz de visualizar um projeto do conceito inicial (UX/UI), executá-lo visualmente (Design) e dar vida a ele (Desenvolvimento Web). Essa visão 360° garante que cada projeto que toco seja não apenas **esteticamente agradável**, mas também **funcional, intuitivo e eficaz** em atingir seus objetivos.
+                    </p>
+                    <p>
+                        Seja para capturar momentos em uma lente, criar uma identidade visual forte ou desenvolver uma aplicação web robusta, meu foco é sempre a **evolução contínua** e a **entrega de resultados excepcionais**.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO SERVIÇOS/PROJETOS (Categorizada) -->
+        <section id="servicos" class="py-20 px-4 bg-gray-800 border-t border-b border-cyan-800/50">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-16 text-cyan-400">Meus Domínios e Projetos</h2>
+
+                <!-- Tabs/Navegação de Categoria de Projetos -->
+                <div class="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-10">
+                    <button class="tab-button active-tab" data-target="fotografia">Fotografia</button>
+                    <button class="tab-button" data-target="design">Design Gráfico</button>
+                    <button class="tab-button" data-target="webdev">Desenvolvimento Web</button>
+                    <button class="tab-button" data-target="uxui">UX/UI Design</button>
+                </div>
+
+                <!-- CONTEÚDO: FOTOGRAFIA -->
+                <div id="fotografia" class="project-content">
+                    <p class="text-lg text-gray-400 mb-8 text-center">
+                        Minha paixão por capturar momentos se traduz em projetos que celebram a vida. Passe o mouse/toque e arraste para navegar.
+                    </p>
+
+                    <!-- Carousel Wrapper -->
+                    <div id="carousel-fotografia" class="carousel-container mx-auto">
+                        <!-- Card de Projeto (Fotografia) -->
+                        <div class="project-card carousel-item" onclick="openProjectModal('https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/representativa%201.png?raw=true', 'Pre Wedding Dayane', 'Acessar Drive', 'https://drive.google.com/drive/folders/1-EyzfSBa7ZdDsHFvyg1YDoQJ3uD5l1gm?usp=drive_link')">
+                            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/representativa%201.png?raw=true" alt="Pre Wedding Dayane" class="card-image">
+                            <div class="p-4">
+                                <h3 class="text-xl font-semibold text-cyan-400">Pré Wedding Dayane</h3>
+                                <p class="text-sm text-gray-400 mt-1">Ensaio pré-casamento com foco em luz natural.</p>
+                            </div>
+                        </div>
+
+                        <div class="project-card carousel-item" onclick="openProjectModal('https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/representativa%202.png?raw=true', 'Ensaio Paula', 'Acessar Drive', 'https://drive.google.com/drive/folders/1dMNOTkJzc7gwmm2iVUoCOJX6rJegEr1f?usp=drive_link')">
+                            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/representativa%202.png?raw=true" alt="Ensaio Paula" class="card-image">
+                            <div class="p-4">
+                                <h3 class="text-xl font-semibold text-cyan-400">Ensaio Pessoal Paula</h3>
+                                <p class="text-sm text-gray-400 mt-1">Sessão de fotos ao ar livre com cores vibrantes.</p>
+                            </div>
+                        </div>
+
+                        <div class="project-card carousel-item" onclick="openProjectModal('https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/representativa%203.png?raw=true', 'Casório Renata e Bruno', 'Acessar Drive', 'https://drive.google.com/drive/folders/1-0vhK_hYvZdSn2lKGuIZlnX_GlhRMZib?usp=drive_link')">
+                            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/representativa%203.png?raw=true" alt="Casório Renata e Bruno" class="card-image">
+                            <div class="p-4">
+                                <h3 class="text-xl font-semibold text-cyan-400">Casamento Renata e Bruno</h3>
+                                <p class="text-sm text-gray-400 mt-1">Cobertura completa do grande dia.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Cards Adicionais (Simulando mais projetos) -->
+                         <div class="project-card carousel-item" onclick="openProjectModal('https://github.com/Goguenblouts/SiteMarcelio/blob/main/Tag%20Ver%20Mais/tema4.png?raw=true', 'Casório Rafa e Iza', 'Acessar Drive', 'https://drive.google.com/drive/folders/1K0BjFmHXIJoJSQSpdcRFIHsqy_vtgjyF?usp=drive_link')">
+                            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Tag%20Ver%20Mais/tema4.png?raw=true" alt="Casório Rafa e Iza" class="card-image">
+                            <div class="p-4">
+                                <h3 class="text-xl font-semibold text-cyan-400">Casamento Rafa e Iza</h3>
+                                <p class="text-sm text-gray-400 mt-1">Momentos inesquecíveis capturados com emoção.</p>
+                            </div>
+                        </div>
+                         <div class="project-card carousel-item" onclick="openProjectModal('https://github.com/Goguenblouts/SiteMarcelio/blob/main/Tag%20Ver%20Mais/tema7.png?raw=true', 'Aniversário da Ro', 'Acessar Drive', 'https://drive.google.com/drive/folders/1-RyuZ_sLREUdbqTS4-zuyPfnzG2RlmHc?usp=drive_link')">
+                            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Tag%20Ver%20Mais/tema7.png?raw=true" alt="Aniversário Ro" class="card-image">
+                            <div class="p-4">
+                                <h3 class="text-xl font-semibold text-cyan-400">Aniversário Ro</h3>
+                                <p class="text-sm text-gray-400 mt-1">Cobertura de festa de aniversário com detalhes.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- CONTEÚDO: DESIGN GRÁFICO -->
+                <div id="design" class="project-content hidden">
+                    <p class="text-lg text-gray-400 mb-8 text-center">
+                        Criação de identidade visual, flyers promocionais e peças decorativas que comunicam com impacto. Passe o mouse/toque e arraste para navegar.
+                    </p>
+
+                    <!-- LOGOS -->
+                    <h3 class="text-2xl font-bold text-cyan-400 my-4 border-b border-gray-700 pb-2 text-center">Logomarcas, Flyers e Mídias</h3>
+                    <div id="carousel-design" class="carousel-container mx-auto">
+                        
+                        <div class="project-card carousel-item" onclick="openImageModal('https://github.com/Goguenblouts/SiteMarcelio/blob/main/logos/logo%201.jpg?raw=true', 'Carcara GO')">
+                            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/logos/logo%201.jpg?raw=true" alt="Carcara go" class="card-image">
+                            <div class="p-4"><h4 class="text-sm text-gray-300">Carcara GO (Logo)</h4></div>
+                        </div>
+                        <div class="project-card carousel-item" onclick="openImageModal('https://github.com/Goguenblouts/SiteMarcelio/blob/main/logos/logo%202.png?raw=true', 'Drink\'s 7 Copas')">
+                            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/logos/logo%202.png?raw=true" alt="Drink's 7 Copas" class="card-image">
+                            <div class="p-4"><h4 class="text-sm text-gray-300">Drink's 7 Copas (Logo)</h4></div>
+                        </div>
+                        <div class="project-card carousel-item" onclick="openImageModal('https://github.com/Goguenblouts/SiteMarcelio/blob/main/logos/logo%203.png?raw=true', 'Top Fit Academia')">
+                            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/logos/logo%203.png?raw=true" alt="Top Fit Academia" class="card-image">
+                            <div class="p-4"><h4 class="text-sm text-gray-300">Top Fit Academia (Logo)</h4></div>
+                        </div>
+                        <div class="project-card carousel-item" onclick="openImageModal('https://github.com/Goguenblouts/SiteMarcelio/blob/main/logos/logo%204.png?raw=true', 'Bethel')">
+                            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/logos/logo%204.png?raw=true" alt="Bethel" class="card-image">
+                            <div class="p-4"><h4 class="text-sm text-gray-300">Bethel (Logo)</h4></div>
+                        </div>
+                        
+                        <div class="project-card carousel-item" onclick="openImageModal('https://github.com/Goguenblouts/SiteMarcelio/blob/main/Flyers/flyers%20(1).jpeg?raw=true', 'Flyer Promocional')">
+                            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Flyers/flyers%20(1).jpeg?raw=true" alt="Flyer 1" class="card-image">
+                            <div class="p-4"><h4 class="text-sm text-gray-300">Flyer Promocional</h4></div>
+                        </div>
+                        <div class="project-card carousel-item" onclick="openImageModal('https://github.com/Goguenblouts/SiteMarcelio/blob/main/Flyers/flyers%20(3).jpg?raw=true', 'Flyer de Evento')">
+                            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Flyers/flyers%20(3).jpg?raw=true" alt="Flyer 6" class="card-image">
+                            <div class="p-4"><h4 class="text-sm text-gray-300">Flyer de Evento</h4></div>
+                        </div>
+                        <div class="project-card carousel-item" onclick="openImageModal('https://github.com/Goguenblouts/SiteMarcelio/blob/main/Flyers/flyers%20(5).png?raw=true', 'Post para Redes Sociais')">
+                            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Flyers/flyers%20(5).png?raw=true" alt="Flyer 8" class="card-image">
+                            <div class="p-4"><h4 class="text-sm text-gray-300">Post para Redes Sociais</h4></div>
+                        </div>
+                        <div class="project-card carousel-item" onclick="openImageModal('https://github.com/Goguenblouts/SiteMarcelio/blob/main/Camisas/Camisa.png?raw=true', 'Estampa de Camisa')">
+                            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Camisas/Camisa.png?raw=true" alt="Camisa" class="card-image">
+                            <div class="p-4"><h4 class="text-sm text-gray-300">Estampa de Camisa</h4></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTEÚDO: DESENVOLVIMENTO WEB (Sem carrossel, layout de lista mantido) -->
+                <div id="webdev" class="project-content hidden">
+                    <p class="text-lg text-gray-400 mb-8 text-center max-w-3xl mx-auto">
+                        Criação de sites responsivos e funcionais, desde páginas de eventos com armazenamento de fotos até sites institucionais.
+                    </p>
+
+                    <!-- Video Demo -->
+                    <div class="flex flex-col md:flex-row gap-10 items-start">
+                        <div class="md:w-1/2 video-container shadow-2xl">
+                            <video autoplay muted loop playsinline class="rounded-xl">
+                                <source src="https://github.com/Goguenblouts/SiteMarcelio/blob/23fcb6101a673ce0facb8db73ecafcef746d4359/video%20dev%20web.mp4?raw=true" type="video/mp4">
+                                Seu navegador não suporta a tag de vídeo.
+                            </video>
+                        </div>
+                        
+                        <!-- Lista de Projetos Web -->
+                        <div class="md:w-1/2">
+                            <h3 class="text-2xl font-bold text-cyan-400 mb-4">Projetos em Destaque:</h3>
+                            <ul class="space-y-3">
+                                <li><a href="https://goguenblouts.github.io/Convite-Digital/" target="_blank" class="project-link">Convite Digital Aniversário <i class="fas fa-external-link-alt ml-2 text-sm"></i></a></li>
+                                <li><a href="https://goguenblouts.github.io/ANIVERSARIO-HEITOR/" target="_blank" class="project-link">Site Armazenamento Fotos (Heitor) <i class="fas fa-external-link-alt ml-2 text-sm"></i></a></li>
+                                <li><a href="https://chadepanela.vercel.app/" target="_blank" class="project-link">Convite Chá Panela (Aline e Gabriel) <i class="fas fa-external-link-alt ml-2 text-sm"></i></a></li>
+                                <li><a href="https://goguenblouts.github.io/CPAG-FOTOS/" target="_blank" class="project-link">Site Armazenamento Fotos (Aline e Gabriel) <i class="fas fa-external-link-alt ml-2 text-sm"></i></a></li>
+                                <li><a href="https://barbeariacortearte.vercel.app/" target="_blank" class="project-link">Site Barbearia (Portfólio) <i class="fas fa-external-link-alt ml-2 text-sm"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTEÚDO: UX/UI DESIGN -->
+                <div id="uxui" class="project-content hidden">
+                    <p class="text-lg text-gray-400 mb-8 text-center max-w-3xl mx-auto">
+                        Foco na usabilidade e experiência do usuário, criando wireframes e protótipos navegáveis no Figma antes do desenvolvimento. Passe o mouse/toque e arraste para navegar.
+                    </p>
+
+                    <div id="carousel-uxui" class="carousel-container mx-auto">
+                        <!-- Card UX/UI 1 -->
+                        <div class="project-card carousel-item p-0 overflow-hidden">
+                            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/adelino%20ux.png?raw=true" alt="Protótipo Barbearia" class="card-image" onclick="openImageModal(this.src, 'Protótipo Barbearia Corte e Arte')">
+                            <div class="p-4 bg-gray-700/50">
+                                <h3 class="text-xl font-semibold text-cyan-400 mb-2">Barbearia Corte e Arte</h3>
+                                <a href="https://www.figma.com/proto/YGdqW0UBIFMzdlbZFDrAN6/Adelino-barber?page-id=0%3A1&node-id=18-83&starting-point-node-id=18%3A83&mode=design&t=TvTQRd5E1B7gbgtE-1" target="_blank" class="project-link text-sm inline-flex items-center">
+                                    Ver Protótipo Figma <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Card UX/UI 2 -->
+                        <div class="project-card carousel-item p-0 overflow-hidden">
+                            <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/parada%20ux.png?raw=true" alt="Protótipo Parada Pets" class="card-image" onclick="openImageModal(this.src, 'Protótipo Parada Pets')">
+                            <div class="p-4 bg-gray-700/50">
+                                <h3 class="text-xl font-semibold text-cyan-400 mb-2">Parada Pets</h3>
+                                <a href="https://www.figma.com/proto/myxYwEKZjDKwRXAoSqF4Jk/Parada-pets?page-id=0%3A1&type=design&node-id=87-527&viewport=322%2C237%2C0.36&t=ziasymKGxm7RA6qb-1&scaling=scale-down&mode=design" target="_blank" class="project-link text-sm inline-flex items-center">
+                                    Ver Protótipo Figma <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
-    </section>
+        </section>
 
-    <section id="webdev" class="category">
-        <h2>Desenvolvimento Web</h2>
-        <p>Um projeto que teve origem a partir do incentivo de um amigo, cresceu de forma significativa em minha vida. Através de estudos online, adquiri conhecimentos em programação que foram aplicados em diversos aspectos do meu cotidiano, e agora vislumbro
-            a possibilidade de transformá-los em uma carreira promissora.</p>
+        <!-- SEÇÃO DE CONTATO E CTA (Call to Action) -->
+        <section id="contato" class="py-20 px-4 max-w-6xl mx-auto text-center">
+            <h2 class="text-4xl font-bold text-cyan-400 mb-6">Pronto para Começar um Projeto?</h2>
+            <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+                Se você busca um profissional com uma visão completa, do conceito ao código, estou pronto para dar vida às suas ideias.
+            </p>
+            <a href="https://wa.me/+5562986369673" target="_blank" class="inline-block px-10 py-4 bg-cyan-600 text-white text-lg font-bold rounded-full shadow-xl hover:bg-cyan-500 transition-all duration-300 transform hover:scale-105 hover:shadow-cyan-500/50">
+                <i class="fab fa-whatsapp mr-2"></i> Envie uma Mensagem Agora!
+            </a>
+        </section>
 
-        <p>Atualmente, já executei diversos trabalhos que demandavam habilidades de desenvolvimento incluindo este proprio site. Estes projetos incluíram a criação de sites para armazenar fotografias de eventos e serem baixados pelos usuarios, elaboração
-            de convites de aniversário personalizados e até mesmo desenvolvimento de sites para empresas que oferecem serviços especializados.</p>
-        <div class="content">
-            <div class="item-video">
-              <video autoplay muted loop>
-                <source src="https://github.com/Goguenblouts/SiteMarcelio/blob/23fcb6101a673ce0facb8db73ecafcef746d4359/video%20dev%20web.mp4?raw=true" type="video/mp4">
-            </video>
+    </main>
+
+    <!-- FOOTER COM ÍCONES SOCIAIS E COPYRIGHT -->
+    <footer class="bg-gray-900 border-t border-cyan-800/50 p-6">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="text-gray-400 mb-4">Conecte-se e me siga nas redes:</p>
+            <div class="flex justify-center space-x-6">
+                <a href="https://www.facebook.com/marcelio.venancio.9" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/marcelio_venancio/" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/marcelio-venancio-87a417254/" class="social-icon" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://wa.me/+5562986369673" class="social-icon" target="_blank"><i class="fab fa-whatsapp"></i></a>
             </div>
-            <div class="links-section">
-                <p>Confira alguns dos meus projetos:</p>
-                <ul class="project-links">
-                    <li><a href="https://goguenblouts.github.io/Convite-Digital/" target="_blank">Convite Digital Aniversario</a></li>
-                    <li><a href="https://goguenblouts.github.io/ANIVERSARIO-HEITOR/" target="_blank">Site Armazenamento Fotos(Heitor)</a></li>
-                    <li><a href="https://chadepanela.vercel.app/" target="_blank">Convite Chá Panela(aline e Gabriel)</a></li>
-                    <li><a href="https://goguenblouts.github.io/CPAG-FOTOS/" target="_blank">Site Armazenamento Fotos(Aline e Gabriel)</a></li>
-                    <li><a href="https://goguenblouts.github.io/Aniversario-Helena/" target="_blank">Site Armazenamento Fotos(Aniver. Helena)</a></li>
-                    <li><a href="https://barbeariacortearte.vercel.app/" target="_blank">Site Barbearia(Portifolio)</a></li>
-                    <li><a href="https://goguenblouts.github.io/CPSC/" target="_blank">Site Armazenamento Fotos(Sara e Caio)</a></li>
-                </ul>
-            </div>
-
-
-
-    </section>
-
-    <!-- Adicione o modal -->
-    <div class="modal" id="modalContainer">
-        <span class="close-button" onclick="closeModal()">&times;</span>
-        <img id="modalImage" src="" alt="Imagem Modal">
-    </div>
-    <section id="uxui" class="category">
-        <h2>UX/UI Design</h2>
-        <p>Explorando o universo do UX/UI Design, estou atualmente envolvido em um projeto que visa conceber a estrutura e funcionalidades de um site antes mesmo de seu desenvolvimento. Já contribuí com dois trabalhos (destacados abaixo) que serviram de base para a elaboração do site.</p>
-        <div class="content">
-            <div class="item-ux">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/adelino%20ux.png?raw=true" alt="Cortearte">
-                <img class="hover-image expandable-image" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/parada%20ux.png?raw=true" alt="paradapets">
-            </div>
+            <p class="mt-6 text-sm text-gray-500">
+                &copy; 2024 Marcelio Venancio. Todos os direitos reservados.
+            </p>
         </div>
-
-        <div class="links-section">
-            <p>Veja esses projetos:</p>
-            <ul class="project-links">
-                <li><a href="https://www.figma.com/proto/YGdqW0UBIFMzdlbZFDrAN6/Adelino-barber?page-id=0%3A1&node-id=18-83&starting-point-node-id=18%3A83&mode=design&t=TvTQRd5E1B7gbgtE-1" target="_blank">Barbearia Corte e Arte</a></li>
-                <li><a href="https://www.figma.com/proto/myxYwEKZjDKwRXAoSqF4Jk/Parada-pets?page-id=0%3A1&type=design&node-id=87-527&viewport=322%2C237%2C0.36&t=ziasymKGxm7RA6qb-1&scaling=scale-down&mode=design" target="_blank">Parada Pets</a></li>
-            </ul>
-        </div>
-
-    </section>
-    <button onclick="topFunction()" id="myBtn" title="Para o Topo"><i class="fas fa-arrow-up"></i></button>
-    <footer>
-        <p>Conecte-se nas redes sociais:</p>
-        <a href="https://www.facebook.com/marcelio.venancio.9" class="social-icons" target="_blank"><i class="fab fa-facebook"></i></a>
-        <a href="https://www.instagram.com/marcelio_venancio/" class="social-icons" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.linkedin.com/in/marcelio-venancio-87a417254/" class="social-icons" target="_blank"><i class="fab fa-linkedin"></i></a>
-        <a href="https://wa.me/+5562986369673" class="social-icons" target="_blank"><i class="fab fa-whatsapp"></i></a>
     </footer>
 
+    <!-- BOTÃO VOLTAR AO TOPO -->
+    <button onclick="topFunction()" id="myBtn" title="Para o Topo" class="fixed bottom-6 right-6 z-50 p-3 bg-cyan-600 text-white rounded-full scroll-to-top-btn hidden">
+        <i class="fas fa-arrow-up text-xl"></i>
+    </button>
+
+    <!-- MODAL DE IMAGEM/PROJETO (Centralizado e Responsivo) -->
+    <div id="modalContainer" class="fixed inset-0 bg-black/90 z-[100] hidden justify-center items-center p-4" onclick="closeModal(event)">
+        <div class="relative bg-gray-900 rounded-xl max-w-4xl w-full p-6" onclick="event.stopPropagation()">
+            <button class="close-button absolute top-3 right-3 text-white text-3xl font-light hover:text-cyan-400 transition" onclick="closeModal(event)">&times;</button>
+            
+            <div id="modalContent" class="text-center">
+                <h3 id="modalTitle" class="text-3xl font-bold text-cyan-400 mb-4"></h3>
+                <img id="modalImage" src="" alt="Imagem Modal" class="mx-auto rounded-lg shadow-2xl mb-6">
+                <p id="modalDescription" class="text-gray-300 mb-6 text-lg"></p>
+                <a id="modalLink" href="#" target="_blank" class="hidden inline-block px-6 py-2 bg-cyan-600 text-white font-semibold rounded-full hover:bg-cyan-500 transition duration-300"></a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Estilos de Componentes (Adicionados via JS para seções dinâmicas) -->
+    <style>
+        .nav-link::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: var(--color-accent);
+            transition: width .3s;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        .project-card {
+            background-color: var(--color-card);
+            border-radius: 1rem; /* rounded-xl */
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(34, 211, 238, 0.4), 0 8px 10px -6px rgba(34, 211, 238, 0.2);
+            border-color: var(--color-accent);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .tab-button {
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #94a3b8; /* text-slate-400 */
+            background-color: #334155; /* bg-slate-700 */
+            border: 2px solid transparent;
+        }
+
+        .tab-button:hover {
+            color: var(--color-accent);
+            background-color: #1e293b; /* bg-slate-800 */
+        }
+
+        .active-tab {
+            color: var(--color-primary) !important;
+            background-color: var(--color-accent) !important;
+            box-shadow: 0 4px 12px rgba(34, 211, 238, 0.5);
+            transform: scale(1.05);
+        }
+        
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--color-accent);
+            font-weight: 600;
+            padding: 0.5rem 0.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .project-link:hover {
+            background-color: rgba(34, 211, 238, 0.1);
+        }
+    </style>
 
     <script>
-        function changeRandomImage(sectionId, imageUrls) {
-            const section = document.getElementById(sectionId);
-            const images = section.querySelectorAll('.hover-image');
-            const randomIndex = Math.floor(Math.random() * images.length);
-            const randomImage = images[randomIndex];
+        // Variáveis globais de controle
+        const typingText = "Seja bem-vindo ao meu site! Aqui, você terá a oportunidade de explorar e apreciar meus trabalhos em diversas áreas: Fotografia, Design Gráfico, Desenvolvimento Web e Design UX/UI. Espero que goste do que vê e fique à vontade para entrar em contato!";
+        const typedTextElement = document.getElementById('typed-text');
+        let index = 0;
 
-            randomImage.style.opacity = '0';
+        // URLs das imagens para a galeria rotativa (Sobret)
+        const sobreImageUrls = [
+            'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img2.png?raw=true',
+            'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img3.png?raw=true',
+            'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img4.png?raw=true',
+            'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img5.png?raw=true',
+            'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img6.png?raw=true',
+        ];
 
-            setTimeout(() => {
-                randomImage.src = getRandomImageUrl(imageUrls);
-                randomImage.style.opacity = '1';
-            }, 500);
-        }
+        let currentImageIndex = 0;
+        const imageContainer = document.getElementById('image-gallery-container');
 
-        function getRandomImageUrl(imageUrls) {
-            const randomIndex = Math.floor(Math.random() * imageUrls.length);
-            return imageUrls[randomIndex];
-        }
+        // --- FUNÇÕES DE INTERATIVIDADE E EFEITOS ---
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Adicione a troca automática de imagem a cada 3 segundos para a seção "sobre"
-            const sobreImageUrls = [
-                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img2.png?raw=true',
-                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img3.png?raw=true',
-                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img4.png?raw=true',
-                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img5.png?raw=true',
-                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img6.png?raw=true',
-                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img7.png?raw=true',
-                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img8.png?raw=true',
-                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img9.png?raw=true',
-                'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img10.png?raw=true',
-                // Adicione mais URLs conforme necessário
-            ];
-
-            setInterval(() => changeRandomImage('sobre', sobreImageUrls), 3000);
-
-            // Adicione a troca automática de imagem a cada 3 segundos para a seção "fotografia"
-            const fotografiaImageUrls = [
-'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/destaque1.png?raw=true',
-'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/destaque2.png?raw=true',
-'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/destaque3.png?raw=true',
-'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/destaque4.png?raw=true',
-'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/destaque5.png?raw=true',
-'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/destaque6.png?raw=true',
-'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/destaque7.png?raw=true',
-'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/destaque8.png?raw=true',
-'https://github.com/Goguenblouts/SiteMarcelio/blob/main/Fotografia/destaque9.png?raw=true',
-
-                // Adicione mais URLs conforme necessário
-            ];
-
-            setInterval(() => changeRandomImage('fotografia', fotografiaImageUrls), 3000);
-
-            // Adicione mais seções conforme necessário
-        });
-
-        // Adicionando o script para o efeito de digitação automática
-        document.addEventListener('DOMContentLoaded', function() {
-            const typedTextElement = document.getElementById('typed-text');
-            const originalText = "Seja bem-vindo ao meu site! Aqui, você terá a oportunidade de explorar e apreciar meus trabalhos em diversas áreas, incluindo fotografia, design gráfico, desenvolvimento web e design UX/UI. Espero que goste do que vê e fique à vontade para entrar em contato se tiver alguma dúvida ou comentário. Aproveite a visita!";
-
-            let index = 0;
-
-            function type() {
-                typedTextElement.innerHTML += originalText[index];
+        // 1. Efeito de Digitação no Hero
+        function type() {
+            if (index < typingText.length) {
+                typedTextElement.innerHTML += typingText[index];
                 index++;
-
-                if (index < originalText.length) {
-                    setTimeout(type, 30); // Ajuste o tempo conforme necessário
-                }
-            }
-
-            type();
-        });
-    </script>
-
-    <script>
-        // Função para exibir as informações quando o botão for clicado
-        function exibirInformacoes() {
-            // Obtém o elemento div das informações
-            var informacoesDiv = document.getElementById("informacoes");
-
-            // Alterna a visibilidade (exibe/oculta)
-            if (informacoesDiv.style.display === "none") {
-                informacoesDiv.style.display = "block";
+                setTimeout(type, 30); // Velocidade de digitação
             } else {
-                informacoesDiv.style.display = "none";
+                // Remove o cursor de digitação ao terminar
+                document.querySelector('.typing-cursor').style.display = 'none';
             }
         }
-    </script>
-    <script>
-        // Adicione a função para exibir o modal
-        function showModal(imageUrl) {
-            const modalContainer = document.getElementById('modalContainer');
-            const modalImage = document.getElementById('modalImage');
 
-            modalImage.src = imageUrl;
-            modalContainer.style.display = 'flex';
+        // 2. Galeria Rotativa de Imagens (Sobret)
+        function changeImage() {
+            // Cria um novo elemento img para a transição
+            const newImg = document.createElement('img');
+            newImg.src = sobreImageUrls[currentImageIndex];
+            newImg.className = 'absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700 rounded-xl';
+            newImg.alt = 'Imagem de Portfólio Rotativa';
+
+            // Limpa o container e adiciona a nova imagem
+            while (imageContainer.firstChild) {
+                imageContainer.removeChild(imageContainer.firstChild);
+            }
+            imageContainer.appendChild(newImg);
+
+            // Força o reflow para garantir a transição
+            setTimeout(() => {
+                newImg.style.opacity = '1';
+            }, 10);
+
+            // Atualiza o índice para a próxima imagem
+            currentImageIndex = (currentImageIndex + 1) % sobreImageUrls.length;
         }
 
-        // Adicione a função para fechar o modal
-        function closeModal() {
-            const modalContainer = document.getElementById('modalContainer');
-            modalContainer.style.display = 'none';
+        // 3. Sistema de Tabs (Serviços)
+        function setupTabs() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const projectContents = document.querySelectorAll('.project-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove a classe 'active-tab' de todos os botões
+                    tabButtons.forEach(btn => btn.classList.remove('active-tab'));
+                    // Adiciona a classe 'active-tab' ao botão clicado
+                    button.classList.add('active-tab');
+
+                    const targetId = button.getAttribute('data-target');
+
+                    // Oculta todo o conteúdo e exibe o alvo
+                    projectContents.forEach(content => {
+                        if (content.id === targetId) {
+                            content.classList.remove('hidden');
+                            
+                            // Se o conteúdo é um carrossel, inicia o auto-scroll
+                            const carousel = content.querySelector('.carousel-container');
+                            if (carousel) {
+                                initCarousels();
+                            }
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
         }
 
-        // Adicione um evento de clique para cada imagem
-        const expandableImages = document.querySelectorAll('.expandable-image');
-        expandableImages.forEach(image => {
-            image.addEventListener('click', () => showModal(image.src));
-        });
-    </script>
-    <script>
-        // Quando o usuário rola a página, mostra o botão
+
+        // 4. Modal (Janela Pop-up para Imagens Simples)
+        function openImageModal(imageUrl, title) {
+            const modalContainer = document.getElementById('modalContainer');
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalImage').src = imageUrl;
+            document.getElementById('modalDescription').textContent = "Clique fora ou no 'X' para fechar.";
+            
+            // Oculta o link pois é uma imagem simples
+            document.getElementById('modalLink').classList.add('hidden');
+            document.getElementById('modalImage').classList.remove('hidden');
+
+            modalContainer.classList.remove('hidden');
+            modalContainer.classList.add('flex');
+        }
+        
+        // 5. Modal (Janela Pop-up para Projetos com Link)
+        function openProjectModal(imageUrl, title, linkText, linkUrl) {
+            const modalContainer = document.getElementById('modalContainer');
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalImage').src = imageUrl;
+            document.getElementById('modalDescription').textContent = "Para ver o trabalho completo, acesse o link abaixo. Este é apenas um preview.";
+            
+            const modalLink = document.getElementById('modalLink');
+            modalLink.textContent = linkText;
+            modalLink.href = linkUrl;
+            
+            // Exibe o link
+            modalLink.classList.remove('hidden');
+            document.getElementById('modalImage').classList.remove('hidden');
+
+            modalContainer.classList.remove('hidden');
+            modalContainer.classList.add('flex');
+        }
+
+        function closeModal(event) {
+            // Se o clique não foi no botão de fechar, verifica se foi no fundo (overlay)
+            if (event.target.id === 'modalContainer' || event.target.className.includes('close-button')) {
+                document.getElementById('modalContainer').classList.remove('flex');
+                document.getElementById('modalContainer').classList.add('hidden');
+            }
+        }
+        
+        // 6. Botão Voltar ao Topo
         window.onscroll = function() {
             scrollFunction()
         };
 
         function scrollFunction() {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                document.getElementById("myBtn").style.display = "block";
+            if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
+                document.getElementById("myBtn").classList.remove('hidden');
             } else {
-                document.getElementById("myBtn").style.display = "none";
+                document.getElementById("myBtn").classList.add('hidden');
             }
         }
 
-        // Quando o usuário clica no botão, rola para o topo do documento
         function topFunction() {
             document.body.scrollTop = 0; // Para o Safari
             document.documentElement.scrollTop = 0; // Para Chrome, Firefox, IE e Opera
         }
+
+        // 7. Auto Carousel Logic
+        let carouselIntervals = {};
+        let isUserScrolling = false;
+
+        function startAutoScroll(containerElement, speed = 1) {
+            if (!containerElement || !containerElement.id) return; // Adicionada checagem defensiva contra null
+            // Limpa qualquer intervalo existente para este container
+            clearInterval(carouselIntervals[containerElement.id]);
+
+            const scroll = () => {
+                if (!isUserScrolling) {
+                    // Verifica se o scroll atingiu o final
+                    if (containerElement.scrollLeft >= containerElement.scrollWidth - containerElement.clientWidth) {
+                        // Volta para o início para um efeito de loop infinito
+                        containerElement.scrollLeft = 0;
+                    } else {
+                        // Rola um pixel para a direita
+                        containerElement.scrollLeft += speed;
+                    }
+                }
+            };
+            
+            // Inicia o intervalo de auto-scroll
+            carouselIntervals[containerElement.id] = setInterval(scroll, 15); 
+            
+            // Pausa o auto-scroll em interações do usuário
+            containerElement.addEventListener('mouseenter', pauseAutoScroll);
+            containerElement.addEventListener('touchstart', pauseAutoScroll);
+            containerElement.addEventListener('mouseleave', resumeAutoScroll);
+            containerElement.addEventListener('touchend', resumeAutoScroll);
+            containerElement.addEventListener('scroll', handleUserScroll);
+        }
+
+        function pauseAutoScroll(event) {
+            const container = event.currentTarget;
+            if (!container || !container.id) return; // Adicionada checagem defensiva contra null
+            clearInterval(carouselIntervals[container.id]);
+        }
+
+        function resumeAutoScroll(event) {
+            const container = event.currentTarget;
+            if (!container || !container.id) return; // Adicionada checagem defensiva contra null
+            // Só retoma se o usuário não estiver rolando ativamente
+            setTimeout(() => {
+                if (!isUserScrolling) {
+                    startAutoScroll(container); // Reinicia o intervalo
+                }
+            }, 50);
+        }
+        
+        // Debounce para detectar quando o usuário parou de rolar manualmente
+        let scrollTimeout;
+        function handleUserScroll(event) {
+            isUserScrolling = true;
+            clearTimeout(scrollTimeout);
+            
+            // Pausa o auto-scroll imediatamente
+            pauseAutoScroll(event); 
+
+            scrollTimeout = setTimeout(() => {
+                isUserScrolling = false;
+                // Retoma o auto-scroll quando a rolagem manual para (depois de 3s)
+                resumeAutoScroll(event); 
+            }, 3000); 
+        }
+        
+        // Inicia a galeria rotativa da seção "Sobre" e os carrosséis
+        function initCarousels() {
+            // Inicia a galeria da seção sobre (se não estiver rodando)
+            if (!imageContainer.querySelector('img')) {
+                 changeImage(); 
+                 setInterval(changeImage, 3500);
+            }
+            
+            // Inicia os carrosséis de projeto (só para os containers visíveis)
+            const visibleCarousels = document.querySelectorAll('.project-content:not(.hidden) .carousel-container');
+            visibleCarousels.forEach(container => {
+                // Atribui ID se não tiver (para gerenciar intervalos)
+                container.id = container.id || `carousel-${Math.random().toString(36).substr(2, 9)}`; 
+                startAutoScroll(container);
+            });
+        }
+
+
+        // --- INICIALIZAÇÃO DO APP ---
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Inicia o efeito de digitação
+            document.querySelector('.typing-cursor').style.display = 'inline'; // Garante que o cursor está visível
+            type();
+
+            // 2. Inicia as funcionalidades (Galeria rotativa e Carrosséis - o carrossel de projetos só inicia na tab ativa)
+            changeImage(); // Mostra a primeira imagem do 'Sobre' imediatamente
+            setInterval(changeImage, 3500); // Troca a cada 3.5 segundos
+            
+            setupTabs();
+            
+            // Inicia o carrossel da primeira tab ativa (fotografia)
+            initCarousels();
+        });
     </script>
-    
 </body>
 
 </html>

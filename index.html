@@ -1,465 +1,509 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marcelio Venancio | Portfólio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        
-        :root {
-            --cyan: #22d3ee;
-            --purple: #a855f7;
-            --bg-dark: #020617;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marcelio Venancio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Syne:wght@400;700;800&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#0c0b0f;--ash:#f5f0e8;--dim:rgba(245,240,232,.35);--border:rgba(245,240,232,.07);--surface:#141318}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--ash);font-family:'Syne',sans-serif;overflow-x:hidden;cursor:none}
+#cur{position:fixed;pointer-events:none;z-index:9999;mix-blend-mode:exclusion;width:8px;height:8px}
+#cur-dot{width:8px;height:8px;background:var(--ash);border-radius:50%}
+#cur-ring{width:36px;height:36px;border:1px solid rgba(245,240,232,.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:width .4s,height .4s,opacity .3s,margin .4s}
+body.on-link #cur-ring{width:56px;height:56px;margin:-10px}
+#noise{position:fixed;inset:0;pointer-events:none;z-index:8;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px}
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-dark);
-            color: #f1f5f9;
-        }
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--ink);z-index:9990;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transition:opacity 1.2s,visibility 1.2s}
+#loader.gone{opacity:0;visibility:hidden}
+.l-name{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,8vw,100px);font-weight:300;font-style:italic;letter-spacing:-.02em;overflow:hidden;line-height:1}
+.l-name span{display:inline-block;transform:translateY(110%);transition:transform 1s cubic-bezier(.76,0,.24,1)}
+.l-name.in span{transform:translateY(0)}
+.l-bar{width:1px;height:80px;background:rgba(245,240,232,.08);margin:48px auto 12px;position:relative}
+.l-fill{position:absolute;top:0;left:0;width:1px;background:var(--ash);height:0%;transition:height .04s linear}
+.l-num{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--dim)}
 
-        #canvas-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:32px 56px;display:flex;justify-content:space-between;align-items:center;transition:background .4s,border-color .4s}
+nav.scrolled{background:rgba(12,11,15,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;font-weight:300;color:var(--ash);text-decoration:none;opacity:.6;transition:opacity .3s}
+.nav-logo:hover{opacity:1}
+.nav-links{display:flex;gap:48px}
+.nav-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,240,232,.3);text-decoration:none;transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:rgba(245,240,232,.4);transition:width .4s}
+.nav-links a:hover{color:var(--ash)}
+.nav-links a:hover::after{width:100%}
+.nav-ham{display:none;flex-direction:column;gap:6px;background:none;border:none;cursor:none;padding:4px}
+.nav-ham span{width:22px;height:1px;background:var(--ash);display:block;opacity:.5}
+#mmenu{position:fixed;inset:0;background:var(--ink);z-index:500;flex-direction:column;align-items:center;justify-content:center;gap:40px;display:none}
+#mmenu.open{display:flex}
+#mmenu a{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:56px;font-weight:300;color:var(--ash);text-decoration:none;opacity:.4;transition:opacity .2s}
+#mmenu a:hover{opacity:1}
+#mclose{position:absolute;top:32px;right:40px;background:none;border:none;color:var(--ash);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.35;cursor:none}
 
-        .glass {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+/* HERO */
+#hero{position:relative;height:100vh;display:flex;align-items:flex-end;padding:0 56px 80px;overflow:hidden}
+#hero-canvas{position:absolute;inset:0;z-index:0}
+.hero-inner{position:relative;z-index:2}
+.hero-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:rgba(245,240,232,.25);margin-bottom:20px}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(72px,10vw,144px);font-weight:300;line-height:.9;letter-spacing:-.02em;margin-bottom:0}
+.hero-title em{font-style:italic;color:rgba(245,240,232,.35)}
+.hero-title strong{font-weight:300;display:block}
+.hero-bottom{display:flex;justify-content:space-between;align-items:flex-end;position:absolute;bottom:80px;left:56px;right:56px}
+.hero-sub{font-family:'DM Mono',monospace;font-size:11px;line-height:1.9;color:rgba(245,240,232,.25);max-width:260px}
+.scroll-hint{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:rgba(245,240,232,.18);display:flex;flex-direction:column;align-items:center;gap:14px}
+.scroll-line{width:1px;height:56px;background:linear-gradient(to bottom,rgba(245,240,232,.3),transparent);animation:sdrop 2s ease-in-out infinite}
+@keyframes sdrop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
-        .content-overlay {
-            position: relative;
-            z-index: 10;
-            pointer-events: none;
-        }
+/* SECTIONS */
+.sec{position:relative;z-index:10;padding:140px 56px}
+.eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:rgba(245,240,232,.22);margin-bottom:24px}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,6vw,80px);font-weight:300;line-height:1;letter-spacing:-.01em;margin-bottom:64px}
+.sec-title em{font-style:italic;color:rgba(245,240,232,.28)}
 
-        .interactive {
-            pointer-events: auto;
-        }
+/* ABOUT */
+#about-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:100px;align-items:start}
+.about-frame{position:relative}
+.about-img-wrap{overflow:hidden;position:relative}
+.about-img-wrap::before{content:'';position:absolute;inset:0;z-index:2;background:linear-gradient(160deg,rgba(61,90,71,.12),transparent 50%);pointer-events:none}
+.about-img-wrap img{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;filter:grayscale(25%) contrast(1.05);transition:filter .8s,opacity .7s}
+.about-caption{position:absolute;bottom:-18px;right:-18px;background:var(--ink);border:1px solid var(--border);padding:14px 18px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--dim);line-height:1.9;text-transform:uppercase}
+.about-text p{font-family:'Cormorant Garamond',serif;font-size:20px;line-height:1.75;color:rgba(245,240,232,.65);margin-bottom:24px;font-weight:300}
+.about-text p em{font-style:italic;color:var(--ash)}
+.about-text p strong{font-weight:400;color:var(--ash)}
+.divider{width:40px;height:1px;background:var(--border);margin:36px 0}
+.skills{display:flex;flex-wrap:wrap;gap:8px}
+.stag{padding:5px 14px;border:1px solid var(--border);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);transition:all .4s;border-radius:2px}
+.stag:hover{border-color:rgba(245,240,232,.3);color:var(--ash)}
 
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, var(--cyan), var(--purple));
-            border-radius: 10px;
-        }
+/* MARQUEE */
+.mq-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:14px 0;margin:0 0 0}
+.mq-track{display:flex;gap:72px;white-space:nowrap;animation:mq 20s linear infinite}
+.mq-track span{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:rgba(245,240,232,.18);flex-shrink:0}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
+/* PORTFOLIO */
+#portfolio{padding:140px 56px}
+.pf-nav{display:flex;gap:0;margin-bottom:56px;border-bottom:1px solid var(--border)}
+.pf-btn{background:none;border:none;color:rgba(245,240,232,.22);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:12px 24px 12px 0;border-bottom:1px solid transparent;margin-bottom:-1px;transition:all .3s;cursor:none}
+.pf-btn:hover{color:rgba(245,240,232,.6)}
+.pf-btn.on{color:var(--ash);border-bottom-color:rgba(245,240,232,.45)}
+.pf-pane{display:none}
+.pf-pane.on{display:block}
 
-        .floating-ui {
-            animation: float 4s ease-in-out infinite;
-        }
+/* DYNAMIC PROJECTS */
+.dyn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.dyn-item{background:var(--ink);overflow:hidden;position:relative}
+.dyn-item img{width:100%;aspect-ratio:1;object-fit:cover;display:block;filter:grayscale(25%);transition:transform .7s cubic-bezier(.4,0,.2,1),filter .5s}
+.dyn-item:hover img{transform:scale(1.06);filter:grayscale(0%) brightness(1.08)}
+.dyn-over{position:absolute;inset:0;background:linear-gradient(to top,rgba(12,11,15,.92) 0%,transparent 55%);opacity:0;transition:opacity .4s;padding:24px;display:flex;flex-direction:column;justify-content:flex-end}
+.dyn-item:hover .dyn-over{opacity:1}
+.dyn-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;font-style:italic;color:var(--ash);margin-bottom:6px}
+.dyn-desc{font-family:'DM Mono',monospace;font-size:9px;line-height:1.7;color:rgba(245,240,232,.5);margin-bottom:10px}
+.dyn-stack{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.dyn-stk{padding:2px 8px;border:1px solid rgba(245,240,232,.15);font-family:'DM Mono',monospace;font-size:8px;color:rgba(245,240,232,.35);letter-spacing:.08em}
+.dyn-link{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;color:rgba(245,240,232,.5);text-decoration:none;text-transform:uppercase;transition:color .2s}
+.dyn-link:hover{color:var(--ash)}
+.dyn-empty{grid-column:1/-1;padding:60px;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:rgba(245,240,232,.15)}
 
-        .gradient-text {
-            background: linear-gradient(to right, var(--cyan), var(--purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+/* STATIC GRIDS */
+.pg{display:grid;gap:1px;background:var(--border)}
+.pg.g4{grid-template-columns:repeat(4,1fr)}
+.pg.g3{grid-template-columns:repeat(3,1fr)}
+.pg.g2{grid-template-columns:repeat(2,1fr)}
+.pi{overflow:hidden;aspect-ratio:1;background:var(--ink);position:relative}
+.pi img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(20%);transition:transform .7s cubic-bezier(.4,0,.2,1),filter .5s}
+.pi:hover img{transform:scale(1.07);filter:grayscale(0%) brightness(1.08)}
+.pi-lbl{position:absolute;bottom:0;left:0;right:0;padding:14px 16px;background:linear-gradient(transparent,rgba(0,0,0,.7));font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,240,232,.45);opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.pi:hover .pi-lbl{opacity:1;transform:none}
+.sec-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:rgba(245,240,232,.16);margin:32px 0 14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
 
-        .portfolio-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .portfolio-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(34, 211, 238, 0.4);
-            box-shadow: 0 10px 30px -10px rgba(34, 211, 238, 0.2);
-        }
+/* ALBUMS */
+.albums{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:1px}
+.alb{background:var(--ink);overflow:hidden}
+.alb img{width:100%;aspect-ratio:1;object-fit:cover;display:block;filter:grayscale(35%) contrast(1.1);transition:transform .8s cubic-bezier(.4,0,.2,1),filter .6s}
+.alb:hover img{transform:scale(1.04);filter:grayscale(0%) contrast(1.1)}
+.alb-info{padding:22px 22px 26px}
+.alb-genre{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.2em;color:rgba(245,240,232,.2);text-transform:uppercase;margin-bottom:6px}
+.alb-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;font-style:italic;color:var(--ash);margin-bottom:4px}
+.alb-year{font-family:'DM Mono',monospace;font-size:8px;color:rgba(245,240,232,.16);letter-spacing:.1em}
 
-        .fade-img {
-            transition: opacity 0.8s ease-in-out;
-        }
-    </style>
+/* WEBDEV */
+.wv{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+.wv-vid{background:var(--ink)}
+.wv-vid video{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;filter:grayscale(15%) contrast(1.1)}
+.wv-cards{background:var(--ink);padding:40px}
+.pj{padding:28px 0;border-bottom:1px solid var(--border)}
+.pj:first-child{padding-top:0}
+.pj:last-child{border-bottom:none;padding-bottom:0}
+.pj-name{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;font-style:italic;color:var(--ash);margin-bottom:8px}
+.pj-desc{font-family:'DM Mono',monospace;font-size:10px;line-height:1.8;color:rgba(245,240,232,.28);margin-bottom:14px}
+.pj-stack{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pk{padding:3px 10px;border:1px solid var(--border);font-family:'DM Mono',monospace;font-size:8px;color:rgba(245,240,232,.22);letter-spacing:.1em}
+.pj-link{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,240,232,.3);text-decoration:none;transition:color .3s}
+.pj-link:hover{color:var(--ash)}
+
+/* CONTACT */
+#contact{padding:140px 56px 100px;overflow:hidden}
+.ghost{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(80px,14vw,200px);line-height:.85;letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1px rgba(245,240,232,.05);white-space:nowrap;user-select:none;margin-bottom:-60px}
+.c-links{display:flex;gap:48px;flex-wrap:wrap;margin-top:48px}
+.c-link{display:flex;align-items:center;gap:14px;text-decoration:none;color:rgba(245,240,232,.28);transition:color .4s;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase}
+.c-link svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.2}
+.c-link:hover{color:var(--ash)}
+
+footer{position:relative;z-index:10;padding:36px 56px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+footer span{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;color:rgba(245,240,232,.14);text-transform:uppercase}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.4,0,.2,1),transform .9s cubic-bezier(.4,0,.2,1)}
+.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}
+.rv.vis{opacity:1;transform:none}
+
+@media(max-width:900px){
+  nav{padding:22px 24px}
+  .nav-links{display:none}
+  .nav-ham{display:flex}
+  .sec,#portfolio,#contact{padding:100px 24px}
+  #hero{padding:0 24px 64px}
+  .hero-bottom{left:24px;right:24px;bottom:64px}
+  #about-inner{grid-template-columns:1fr;gap:56px}
+  .about-caption{right:0}
+  .albums{grid-template-columns:1fr 1fr}
+  .pg.g4{grid-template-columns:1fr 1fr}
+  .pg.g3{grid-template-columns:1fr 1fr}
+  .wv{grid-template-columns:1fr}
+  .dyn-grid{grid-template-columns:1fr 1fr}
+  footer{padding:28px 24px;flex-direction:column;gap:8px}
+}
+@media(max-width:560px){
+  .albums{grid-template-columns:1fr}
+  .dyn-grid{grid-template-columns:1fr}
+  .hero-sub{display:none}
+}
+</style>
 </head>
-<body class="custom-scrollbar">
+<body>
 
-    <div id="canvas-container"></div>
+<div id="cur"><div id="cur-dot"></div></div>
+<div id="cur-ring"></div>
+<div id="noise"></div>
 
-    <div class="content-overlay min-h-screen flex flex-col">
-        
-        <header class="p-6 flex justify-between items-center interactive">
-            <div class="flex flex-col">
-                <h1 class="text-2xl font-black tracking-tighter text-cyan-400">MARCELIO.DEV</h1>
-                <span class="text-[10px] text-purple-400 font-bold tracking-widest uppercase">Portfólio Multidisciplinar</span>
-            </div>
-            <nav class="hidden md:flex space-x-8 text-xs font-bold tracking-widest uppercase">
-                <button onclick="closeSection()" class="hover:text-cyan-400 transition">Início</button>
-                <button onclick="showSection('sobre')" class="hover:text-cyan-400 transition">Sobre</button>
-                <button onclick="showSection('portfolio')" class="hover:text-cyan-400 transition">Portfólio</button>
-                <button onclick="showSection('contato')" class="hover:text-cyan-400 transition">Contato</button>
-            </nav>
-            <button class="md:hidden text-cyan-400 text-2xl" onclick="toggleMobileMenu()">
-                <i class="fas fa-bars"></i>
-            </button>
-        </header>
+<!-- LOADER -->
+<div id="loader">
+  <div class="l-name" id="ln1"><span>Marcelio</span></div>
+  <div class="l-name" id="ln2" style="margin-top:-6px"><span>Venancio</span></div>
+  <div class="l-bar"><div class="l-fill" id="lfill"></div></div>
+  <div class="l-num" id="lnum">0</div>
+</div>
 
-        <main id="hero-section" class="flex-grow flex items-center px-6 md:px-20 transition-all duration-700">
-            <div class="max-w-4xl floating-ui">
-                <p class="text-cyan-400 font-bold tracking-[0.3em] mb-4 text-sm">MARCELIO VENANCIO</p>
-                <h2 class="text-5xl md:text-8xl font-black leading-tight mb-6 uppercase">
-                    Arte <span class="text-white">&</span> <br> <span class="gradient-text">Tecnologia</span>
-                </h2>
-                <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-12 leading-relaxed">
-                    Diretor de arte focado em estética surrealista e desenvolvedor web. Transformando visões complexas em interfaces funcionais.
-                </p>
-                <div class="flex flex-wrap gap-5 interactive">
-                    <button onclick="showSection('portfolio')" class="px-10 py-4 bg-cyan-600 text-white font-black rounded-lg hover:bg-purple-600 transition-all shadow-lg">
-                        VER TRABALHOS
-                    </button>
-                    <button onclick="showSection('sobre')" class="px-10 py-4 glass text-white font-black rounded-lg hover:bg-white/5 transition-all">
-                        QUEM SOU
-                    </button>
-                </div>
-            </div>
-        </main>
+<!-- NAV -->
+<nav id="mainnav">
+  <a href="#hero" class="nav-logo">mv.</a>
+  <div class="nav-links">
+    <a href="#about">Sobre</a>
+    <a href="#portfolio">Portfólio</a>
+    <a href="#contact">Contato</a>
+  </div>
+  <button class="nav-ham" onclick="document.getElementById('mmenu').classList.add('open')">
+    <span></span><span></span>
+  </button>
+</nav>
+<div id="mmenu">
+  <button id="mclose" onclick="document.getElementById('mmenu').classList.remove('open')">× fechar</button>
+  <a href="#about" onclick="document.getElementById('mmenu').classList.remove('open')">Sobre</a>
+  <a href="#portfolio" onclick="document.getElementById('mmenu').classList.remove('open')">Portfólio</a>
+  <a href="#contact" onclick="document.getElementById('mmenu').classList.remove('open')">Contato</a>
+</div>
 
-        <section id="overlay-content" class="fixed inset-0 glass z-50 hidden opacity-0 transition-all duration-500 overflow-y-auto interactive custom-scrollbar">
-            <div class="max-w-6xl mx-auto py-20 px-6">
-                <button onclick="closeSection()" class="fixed top-8 right-8 text-4xl text-cyan-400 hover:text-purple-400 transition z-[60]">
-                    <i class="fas fa-times-circle"></i>
-                </button>
-                <div id="dynamic-content"></div>
-            </div>
-        </section>
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-inner">
+    <div class="hero-tag rv">// Arte &amp; Tecnologia — Goiânia, GO</div>
+    <h1 class="hero-title rv d1">
+      <strong>Marcelio</strong>
+      <em>Venancio</em>
+    </h1>
+  </div>
+  <div class="hero-bottom">
+    <p class="hero-sub rv d2">Diretor de arte,<br>músico e<br>desenvolvedor.</p>
+    <div class="scroll-hint rv d3">
+      <div class="scroll-line"></div>
+      scroll
+    </div>
+  </div>
+</section>
 
-        <footer class="p-8 flex justify-between items-center interactive">
-            <div class="text-[10px] text-gray-500 tracking-widest uppercase font-bold">Marcelio Venancio // 2024</div>
-            <div class="flex space-x-6 text-xl">
-                <a href="https://instagram.com/marcelio_venancio/" target="_blank" class="hover:text-cyan-400 transition"><i class="fab fa-instagram"></i></a>
-                <a href="https://linkedin.com/in/marcelio-venancio-87a417254/" target="_blank" class="hover:text-cyan-400 transition"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://wa.me/+5562986369673" target="_blank" class="hover:text-cyan-400 transition"><i class="fab fa-whatsapp"></i></a>
-            </div>
-        </footer>
+<!-- ABOUT -->
+<section id="about" class="sec">
+  <div id="about-inner">
+    <div class="about-frame rv">
+      <div class="about-img-wrap">
+        <img id="about-img" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img1.png?raw=true" alt="Marcelio Venancio">
+      </div>
+      <div class="about-caption">Goiânia, GO<br>Art Director<br>Developer</div>
+    </div>
+    <div class="rv d1">
+      <div class="eyebrow">— Sobre</div>
+      <h2 class="sec-title">Quem<br><em>sou eu</em></h2>
+      <div class="about-text">
+        <p>Músico, fotógrafo e desenvolvedor. A minha jornada é a fusão entre a <em>precisão técnica do código</em> e a liberdade da arte visual.</p>
+        <p>Especialista em manipulação de imagem — materializo conceitos abstratos em <strong>identidades visuais que contam histórias</strong>.</p>
+      </div>
+      <div class="divider"></div>
+      <div class="skills">
+        <div class="stag">Direção de Arte</div><div class="stag">Photoshop</div>
+        <div class="stag">Fotografia</div><div class="stag">Web Dev</div>
+        <div class="stag">Design Gráfico</div><div class="stag">Música</div>
+        <div class="stag">Next.js</div><div class="stag">Three.js</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mq-wrap">
+  <div class="mq-track">
+    <span>Direção de Arte</span><span>·</span><span>Fotografia</span><span>·</span>
+    <span>Web Development</span><span>·</span><span>Design Gráfico</span><span>·</span>
+    <span>Música</span><span>·</span><span>Manipulação Digital</span><span>·</span>
+    <span>Direção de Arte</span><span>·</span><span>Fotografia</span><span>·</span>
+    <span>Web Development</span><span>·</span><span>Design Gráfico</span><span>·</span>
+    <span>Música</span><span>·</span><span>Manipulação Digital</span><span>·</span>
+  </div>
+</div>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="rv">
+    <div class="eyebrow">— Portfólio</div>
+    <h2 class="sec-title">Trabalhos<br><em>selecionados</em></h2>
+  </div>
+  <div class="rv d1">
+    <div class="pf-nav">
+      <button class="pf-btn on" onclick="pfTab('arte',this)">Dir. Arte</button>
+      <button class="pf-btn" onclick="pfTab('design',this)">Design</button>
+      <button class="pf-btn" onclick="pfTab('foto',this)">Fotografia</button>
+      <button class="pf-btn" onclick="pfTab('web',this)">Web Dev</button>
+      <button class="pf-btn" onclick="pfTab('projetos',this)">Projetos</button>
     </div>
 
-    <script>
-        let scene, camera, renderer, particles, nodes = [];
-        let mouseX = 0, mouseY = 0;
-        let targetRotationX = 0, targetRotationY = 0;
-        let aboutInterval;
-        const raycaster = new THREE.Raycaster();
-        const mouse = new THREE.Vector2();
+    <!-- DIR ARTE -->
+    <div class="pf-pane on" id="pf-arte">
+      <div class="albums">
+        <div class="alb"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DIRE%C3%87%C3%83O%20ARTE/THE%20HUMAN%20VESSEL.png?raw=true" alt=""><div class="alb-info"><div class="alb-genre">Atmospheric Progressive Metal</div><div class="alb-title">The Human Vessel</div><div class="alb-year">2025 — 5 faixas</div></div></div>
+        <div class="alb"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DIRE%C3%87%C3%83O%20ARTE/ASHES%20STILL%20REMEMBER.png?raw=true" alt=""><div class="alb-info"><div class="alb-genre">Atmospheric Gothic Doom</div><div class="alb-title">Ashes Still Remember</div><div class="alb-year">2026 — Em desenvolvimento</div></div></div>
+        <div class="alb"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DIRE%C3%87%C3%83O%20ARTE/LIMEN.png?raw=true" alt=""><div class="alb-info"><div class="alb-genre">Liminal Identity</div><div class="alb-title">LIMEN</div><div class="alb-year">2027 — Conceito</div></div></div>
+      </div>
+      <div class="pg g3" style="margin-top:1px">
+        <div class="pi"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DIRE%C3%87%C3%83O%20ARTE/PHOTOSHOP%20(3).jpg?raw=true" alt=""><div class="pi-lbl">Manipulação Digital</div></div>
+        <div class="pi"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DIRE%C3%87%C3%83O%20ARTE/PHOTOSHOP%20(3).png?raw=true" alt=""><div class="pi-lbl">Arte Digital</div></div>
+        <div class="pi" style="display:flex;align-items:center;justify-content:center"><span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:rgba(245,240,232,.08)">em breve</span></div>
+      </div>
+    </div>
 
-        function initThree() {
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 0, 5);
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            document.getElementById('canvas-container').appendChild(renderer.domElement);
-            const ambient = new THREE.AmbientLight(0xffffff, 1.5);
-            scene.add(ambient);
-            const geo = new THREE.BufferGeometry();
-            const pos = new Float32Array(2000 * 3);
-            for(let i=0; i<6000; i++) pos[i] = (Math.random() - 0.5) * 20;
-            geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-            particles = new THREE.Points(geo, new THREE.PointsMaterial({ color: 0x22d3ee, size: 0.02, transparent: true, opacity: 0.5 }));
-            scene.add(particles);
-            createNode(0x22d3ee, {x: -3, y: 1.5, z: 0}, 'sobre');
-            createNode(0x4ade80, {x: 3, y: 2, z: -1}, 'webdev');
-            createNode(0xa855f7, {x: 3.5, y: -2, z: 1}, 'design');
-            createNode(0xfbbf24, {x: -3, y: -1.5, z: -1}, 'foto');
-            createNode(0xff00ff, {x: 0, y: -3, z: 1}, 'musica');
-            window.addEventListener('resize', onResize);
-            document.addEventListener('mousemove', (e) => {
-                mouseX = (e.clientX - window.innerWidth/2)/150;
-                mouseY = (e.clientY - window.innerHeight/2)/150;
-                mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-                mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-            });
-            document.addEventListener('mousedown', onNodeClick);
-            animate();
-        }
+    <!-- DESIGN -->
+    <div class="pf-pane" id="pf-design">
+      <div class="sec-sub">Social Media &amp; Flyers</div>
+      <div class="pg g4"><div class="pi"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DESIGN/A%20(1).png?raw=true" alt=""><div class="pi-lbl">Gastronomia</div></div><div class="pi"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DESIGN/B%20(1).png?raw=true" alt=""><div class="pi-lbl">Barber Shop</div></div><div class="pi"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DESIGN/D%20(2).png?raw=true" alt=""><div class="pi-lbl">Fast Food</div></div><div class="pi"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DESIGN/B%20(5).png?raw=true" alt=""><div class="pi-lbl">Datas Comemorativas</div></div></div>
+      <div class="sec-sub">Quadros Decorativos</div>
+      <div class="pg g3"><div class="pi" style="aspect-ratio:auto"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%201%20(2).jpg?raw=true" alt="" style="height:auto;aspect-ratio:auto"><div class="pi-lbl">Abstrato</div></div><div class="pi" style="aspect-ratio:auto"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%201%20(3).jpg?raw=true" alt="" style="height:auto;aspect-ratio:auto"><div class="pi-lbl">Natureza</div></div><div class="pi" style="aspect-ratio:auto"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%203%20(2).jpg?raw=true" alt="" style="height:auto;aspect-ratio:auto"><div class="pi-lbl">Minimalista</div></div></div>
+      <div class="sec-sub">Branding &amp; Logos</div>
+      <div class="pg g2" style="max-width:500px"><div class="pi"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DESIGN/I%20(1).jpg?raw=true" alt=""><div class="pi-lbl">Logo Burguer</div></div><div class="pi"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DESIGN/I%20(2).jpg?raw=true" alt=""><div class="pi-lbl">Logo House</div></div></div>
+    </div>
 
-        function createNode(color, pos, id) {
-            const mesh = new THREE.Mesh(new THREE.IcosahedronGeometry(0.5, 1), new THREE.MeshPhongMaterial({ color, wireframe: true, transparent: true, opacity: 0.6 }));
-            mesh.position.set(pos.x, pos.y, pos.z);
-            mesh.userData = { id };
-            scene.add(mesh);
-            nodes.push(mesh);
-        }
+    <!-- FOTO -->
+    <div class="pf-pane" id="pf-foto">
+      <div class="sec-sub">Retratos &amp; Ensaios</div>
+      <div class="pg g4"><div class="pi"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/FOTOGRAFIA/A%20(2).jpg?raw=true" alt=""><div class="pi-lbl">Casal / Rio</div></div><div class="pi"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/FOTOGRAFIA/B%20(1).jpg?raw=true" alt=""><div class="pi-lbl">Ensaio Noiva</div></div><div class="pi"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/FOTOGRAFIA/B%20(3).jpg?raw=true" alt=""><div class="pi-lbl">Natural</div></div><div class="pi"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/FOTOGRAFIA/D%20(1).jpg?raw=true" alt=""><div class="pi-lbl">Praia</div></div></div>
+      <div class="sec-sub">Social &amp; Coletivo</div>
+      <div class="pg g2" style="max-width:600px"><div class="pi"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/FOTOGRAFIA/C%20(5).jpg?raw=true" alt=""><div class="pi-lbl">Banda</div></div><div class="pi"><img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/FOTOGRAFIA/C%20(3).jpg?raw=true" alt=""><div class="pi-lbl">Evento</div></div></div>
+    </div>
 
-        function onNodeClick() {
-            raycaster.setFromCamera(mouse, camera);
-            const hits = raycaster.intersectObjects(nodes);
-            if(hits.length > 0) {
-                const id = hits[0].object.userData.id;
-                showSection(id === 'foto' || id === 'design' || id === 'musica' || id === 'webdev' ? 'portfolio' : id, id);
-            }
-        }
+    <!-- WEB DEV -->
+    <div class="pf-pane" id="pf-web">
+      <div class="wv">
+        <div class="wv-vid"><video autoplay muted loop playsinline><source src="https://github.com/Goguenblouts/SiteMarcelio/blob/23fcb6101a673ce0facb8db73ecafcef746d4359/video%20dev%20web.mp4?raw=true" type="video/mp4"></video></div>
+        <div class="wv-cards">
+          <div class="pj"><div class="pj-name">Corte &amp; Arte</div><div class="pj-desc">Landing page para barbearia com agendamento, galeria e identidade visual.</div><div class="pj-stack"><span class="pk">Next.js</span><span class="pk">Tailwind</span><span class="pk">Vercel</span></div><a href="https://barbeariacortearte.vercel.app/" target="_blank" class="pj-link">Visitar projeto →</a></div>
+          <div class="pj"><div class="pj-name">Este Portfólio</div><div class="pj-desc">WebGL GLSL shader, cursor com blend mode exclusion, noise animado.</div><div class="pj-stack"><span class="pk">Three.js</span><span class="pk">GLSL</span><span class="pk">Vanilla JS</span></div></div>
+        </div>
+      </div>
+    </div>
 
-        function onResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
+    <!-- PROJETOS DINÂMICOS -->
+    <div class="pf-pane" id="pf-projetos">
+      <div class="dyn-grid" id="dyn-grid">
+        <div class="dyn-empty">Carregando projetos...</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        function animate() {
-            requestAnimationFrame(animate);
-            targetRotationX += (mouseY * 0.08 - targetRotationX) * 0.05;
-            targetRotationY += (mouseX * 0.08 - targetRotationY) * 0.05;
-            particles.rotation.y += 0.0005;
-            nodes.forEach(n => { n.rotation.y += 0.01; n.rotation.z += 0.005; });
-            scene.rotation.x = targetRotationX;
-            scene.rotation.y = targetRotationY;
-            renderer.render(scene, camera);
-        }
+<!-- CONTACT -->
+<section id="contact">
+  <div class="ghost">Contato</div>
+  <div style="position:relative;z-index:2" class="rv">
+    <div class="eyebrow">— Vamos conversar</div>
+    <h2 class="sec-title" style="margin-bottom:0">Fala<br><em>comigo</em></h2>
+    <div class="c-links">
+      <a href="https://wa.me/+5562986369673" target="_blank" class="c-link"><svg viewBox="0 0 24 24"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/></svg>WhatsApp</a>
+      <a href="https://instagram.com/marcelio_venancio/" target="_blank" class="c-link"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram</a>
+      <a href="https://linkedin.com/in/marcelio-venancio-87a417254/" target="_blank" class="c-link"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4V9h4v2a6 6 0 0 1 2-2z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a>
+    </div>
+  </div>
+</section>
 
-        const contents = {
-            sobre: `
-                <div class="grid md:grid-cols-2 gap-16 items-center">
-                    <div class="relative">
-                        <div class="absolute -inset-2 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur opacity-30"></div>
-                        <div class="glass rounded-2xl overflow-hidden aspect-square border-2 border-white/10 shadow-2xl">
-                            <img id="rotating-photo" src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img1.png?raw=true" class="w-full h-full object-cover fade-img" alt="Marcelio">
-                        </div>
-                    </div>
-                    <div class="space-y-8">
-                        <h3 class="text-6xl font-black uppercase italic tracking-tighter">Marcelio <span class="text-cyan-400">Venancio</span></h3>
-                        <div class="text-gray-300 text-lg space-y-6 leading-relaxed">
-                            <p>Músico, Fotógrafo e Desenvolvedor. Minha jornada é marcada pela fusão entre a precisão técnica do código e a liberdade criativa da arte visual.</p>
-                            <p>Especialista em manipulação de imagem, utilizo o <strong class="text-cyan-400">Photoshop</strong> para materializar conceitos abstratos, criando identidades visuais que contam histórias.</p>
-                        </div>
-                    </div>
-                </div>
-            `,
+<footer>
+  <span>Marcelio Venancio — 2024</span>
+  <span>Goiânia, GO</span>
+</footer>
 
-            portfolio: (cat) => {
-                let inner = "";
-                const btnActive = "bg-cyan-600 text-white shadow-lg shadow-cyan-500/30";
-                const btnInactive = "glass text-gray-400 hover:text-cyan-400";
-                
-                if(cat === 'foto') {
-                    inner = `
-                        <div class="space-y-16">
-                            <section>
-                                <h4 class="text-2xl font-black border-l-4 border-cyan-400 pl-4 uppercase tracking-widest mb-8">Retratos & Ensaios</h4>
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/FOTOGRAFIA/A%20(2).jpg?raw=true" class="rounded-xl glass w-full h-72 object-cover portfolio-card" alt="Casal Rio">
-                                    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/FOTOGRAFIA/B%20(1).jpg?raw=true" class="rounded-xl glass w-full h-72 object-cover portfolio-card" alt="Noiva">
-                                    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/FOTOGRAFIA/B%20(3).jpg?raw=true" class="rounded-xl glass w-full h-72 object-cover portfolio-card" alt="Ensaio Verde">
-                                    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/FOTOGRAFIA/D%20(1).jpg?raw=true" class="rounded-xl glass w-full h-72 object-cover portfolio-card" alt="Praia">
-                                </div>
-                            </section>
-                            <section>
-                                <h4 class="text-2xl font-black border-l-4 border-purple-400 pl-4 uppercase tracking-widest mb-8">Social & Coletivo</h4>
-                                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/FOTOGRAFIA/C%20(5).jpg?raw=true" class="rounded-xl glass w-full h-64 object-cover portfolio-card" alt="Banda">
-                                    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/FOTOGRAFIA/C%20(3).jpg?raw=true" class="rounded-xl glass w-full h-64 object-cover portfolio-card" alt="Evento">
-                                </div>
-                            </section>
-                        </div>`;
-                } else if(cat === 'design') {
-                    inner = `
-                        <div class="space-y-20">
-                            <section>
-                                <h4 class="text-2xl font-black mb-8 text-cyan-400 uppercase tracking-widest border-b border-white/10 pb-4">Social Media & Flyers</h4>
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                                    <div class="portfolio-card glass p-2 rounded-xl">
-                                        <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DESIGN/A%20(1).png?raw=true" class="w-full h-auto rounded-lg" alt="Flyer Bolo">
-                                        <p class="text-[10px] mt-2 text-center uppercase font-bold text-gray-500">Gastronomia</p>
-                                    </div>
-                                    <div class="portfolio-card glass p-2 rounded-xl">
-                                        <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DESIGN/B%20(1).png?raw=true" class="w-full h-auto rounded-lg" alt="Flyer Barbearia">
-                                        <p class="text-[10px] mt-2 text-center uppercase font-bold text-gray-500">Barber Shop</p>
-                                    </div>
-                                    <div class="portfolio-card glass p-2 rounded-xl">
-                                        <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DESIGN/D%20(2).png?raw=true" class="w-full h-auto rounded-lg" alt="Flyer Burger">
-                                        <p class="text-[10px] mt-2 text-center uppercase font-bold text-gray-500">Fast Food</p>
-                                    </div>
-                                    <div class="portfolio-card glass p-2 rounded-xl">
-                                        <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DESIGN/B%20(5).png?raw=true" class="w-full h-auto rounded-lg" alt="Ano Novo">
-                                        <p class="text-[10px] mt-2 text-center uppercase font-bold text-gray-500">Datas Comemorativas</p>
-                                    </div>
-                                </div>
-                            </section>
+<script>
+/* CURSOR */
+let cx=innerWidth/2,cy=innerHeight/2,rx=cx,ry=cy;
+const cur=document.getElementById('cur');
+const ring=document.getElementById('cur-ring');
+document.addEventListener('mousemove',e=>{
+  cx=e.clientX;cy=e.clientY;
+  cur.style.left=(cx-4)+'px';cur.style.top=(cy-4)+'px';
+});
+(function ar(){
+  rx+=(cx-18-rx)*.1;ry+=(cy-18-ry)*.1;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(ar);
+})();
+document.querySelectorAll('a,button,.alb,.pi,.dyn-item,.stag').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('on-link'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('on-link'));
+});
 
-                            <section>
-                                <h4 class="text-2xl font-black mb-8 text-green-400 uppercase tracking-widest border-b border-white/10 pb-4">Quadros Decorativos</h4>
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                                    <div class="portfolio-card glass p-3 rounded-xl">
-                                        <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%201%20(2).jpg?raw=true" class="w-full h-auto rounded-lg shadow-2xl" alt="Quadro 1">
-                                        <p class="text-[10px] mt-3 text-center uppercase font-bold text-gray-500 tracking-tighter">Abstrato / Arte</p>
-                                    </div>
-                                    <div class="portfolio-card glass p-3 rounded-xl">
-                                        <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%201%20(3).jpg?raw=true" class="w-full h-auto rounded-lg shadow-2xl" alt="Quadro 2">
-                                        <p class="text-[10px] mt-3 text-center uppercase font-bold text-gray-500 tracking-tighter">Natureza / Interior</p>
-                                    </div>
-                                    <div class="portfolio-card glass p-3 rounded-xl">
-                                        <img src="Uhttps://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%203%20(1).jpg?raw=true" class="w-full h-auto rounded-lg shadow-2xl" alt="Quadro 3">
-                                        <p class="text-[10px] mt-3 text-center uppercase font-bold text-gray-500 tracking-tighter">Geométrico</p>
-                                    </div>
-                                    <div class="portfolio-card glass p-3 rounded-xl">
-                                        <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/Quadros/Quadros%203%20(2).jpg?raw=true" class="w-full h-auto rounded-lg shadow-2xl" alt="Quadro 4">
-                                        <p class="text-[10px] mt-3 text-center uppercase font-bold text-gray-500 tracking-tighter">Minimalista</p>
-                                    </div>
-                                </div>
-                            </section>
+/* LOADER */
+(function(){
+  setTimeout(()=>document.getElementById('ln1').classList.add('in'),200);
+  setTimeout(()=>document.getElementById('ln2').classList.add('in'),500);
+  let p=0;
+  const fill=document.getElementById('lfill'),num=document.getElementById('lnum');
+  const iv=setInterval(()=>{
+    p+=Math.random()*3+.5;
+    if(p>=100){p=100;clearInterval(iv);}
+    fill.style.height=p+'%';
+    num.textContent=Math.floor(p);
+    if(p>=100){
+      setTimeout(()=>{
+        document.getElementById('loader').classList.add('gone');
+        document.querySelectorAll('.rv').forEach(el=>setTimeout(()=>el.classList.add('vis'),300));
+      },600);
+    }
+  },50);
+})();
 
-                            <section>
-                                <h4 class="text-2xl font-black mb-8 text-purple-400 uppercase tracking-widest border-b border-white/10 pb-4">Branding & Logos</h4>
-                                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-                                    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DESIGN/I%20(1).jpg?raw=true" class="glass rounded-2xl p-6 aspect-square object-contain portfolio-card" alt="Logo Burguer">
-                                    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DESIGN/I%20(2).jpg?raw=true" class="glass rounded-2xl p-6 aspect-square object-contain portfolio-card" alt="Logo House">
-                                </div>
-                            </section>
-                        </div>`;
-                } else if(cat === 'musica') {
-                    inner = `
-                        <div class="space-y-16">
-                            <section>
-                                <h4 class="text-2xl font-black border-l-4 border-cyan-400 pl-4 uppercase tracking-widest mb-8">Álbuns Autorais</h4>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                    <div class="glass p-4 rounded-2xl portfolio-card">
-                                        <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DIRE%C3%87%C3%83O%20ARTE/THE%20HUMAN%20VESSEL.png?raw=true" class="w-full aspect-square object-cover rounded-xl mb-4" alt="Vessel">
-                                        <h5 class="text-xl font-black text-cyan-400 uppercase italic">The Human Vessel</h5>
-                                    </div>
-                                    <div class="glass p-4 rounded-2xl portfolio-card">
-                                        <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DIRE%C3%87%C3%83O%20ARTE/ASHES%20STILL%20REMEMBER.png?raw=true" class="w-full aspect-square object-cover rounded-xl mb-4" alt="Ashes">
-                                        <h5 class="text-xl font-black text-purple-400 uppercase italic">Ashes Still Remember</h5>
-                                    </div>
-                                    <div class="glass p-4 rounded-2xl portfolio-card">
-                                        <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DIRE%C3%87%C3%83O%20ARTE/LIMEN.png?raw=true" class="w-full aspect-square object-cover rounded-xl mb-4" alt="Limen">
-                                        <h5 class="text-xl font-black text-green-400 uppercase italic">Limen</h5>
-                                    </div>
-                                </div>
-                            </section>
-                            <section>
-                                <h4 class="text-2xl font-black border-l-4 border-purple-500 pl-4 uppercase tracking-widest mb-8">Manipulações Photoshop</h4>
-                                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/86751207755a0835264471af6b27edf60366f757/DIRE%C3%87%C3%83O%20ARTE/PHOTOSHOP%20(1).dng" class="rounded-xl glass w-full h-48 object-cover portfolio-card" alt="Tardis">
-                                    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DIRE%C3%87%C3%83O%20ARTE/PHOTOSHOP%20(3).jpg?raw=true" class="rounded-xl glass w-full h-48 object-cover portfolio-card" alt="Moto Galáxia">
-                                    <img src="https://github.com/Goguenblouts/SiteMarcelio/blob/main/DIRE%C3%87%C3%83O%20ARTE/PHOTOSHOP%20(3).png?raw=true" class="rounded-xl glass w-full h-48 object-cover portfolio-card" alt="Neve">
-                                </div>
-                            </section>
-                        </div>`;
-                } else if(cat === 'webdev') {
-                    inner = `
-                        <div class="grid lg:grid-cols-2 gap-16 items-start">
-                            <div class="space-y-8">
-                                <h4 class="text-2xl font-bold text-cyan-400 uppercase">Coding Portfolio</h4>
-                                <div class="video-container shadow-2xl">
-                                    <video autoplay muted loop playsinline class="w-full">
-                                        <source src="https://github.com/Goguenblouts/SiteMarcelio/blob/23fcb6101a673ce0facb8db73ecafcef746d4359/video%20dev%20web.mp4?raw=true" type="video/mp4">
-                                    </video>
-                                </div>
-                            </div>
-                            <div class="space-y-6">
-                                <h4 class="text-2xl font-bold text-purple-400 uppercase tracking-widest">Live Projects</h4>
-                                <a href="https://barbeariacortearte.vercel.app/" target="_blank" class="glass p-8 rounded-xl flex justify-between items-center group hover:bg-cyan-500/10 transition border-l-4 border-cyan-500 portfolio-card">
-                                    <div><span class="block font-black text-xl">Corte & Arte</span><span class="text-xs text-gray-500 uppercase">Next.js + Tailwind</span></div>
-                                    <i class="fas fa-external-link-alt text-cyan-400"></i>
-                                </a>
-                            </div>
-                        </div>`;
-                }
+/* HERO GLSL */
+(function(){
+  const cv=document.getElementById('hero-canvas');
+  const gl=cv.getContext('webgl');
+  if(!gl)return;
+  const rz=()=>{cv.width=innerWidth;cv.height=innerHeight;gl.viewport(0,0,cv.width,cv.height);};
+  rz();window.addEventListener('resize',rz);
+  const vs=`attribute vec2 a;varying vec2 v;void main(){v=a*.5+.5;gl_Position=vec4(a,0,1);}`;
+  const fs=`precision mediump float;varying vec2 v;uniform float t;uniform vec2 m;
+float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+float n(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),u.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),u.x),u.y);}
+float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n(p);p=p*2.3;a*=.5;}return v;}
+void main(){
+  vec2 uv=v+(m-.5)*.04;
+  float n1=fbm(uv*3.+t*.06);float n2=fbm(uv*5.-t*.04+n1);float c=fbm(uv*2.+n2+t*.03);
+  vec3 a=vec3(.047,.043,.059),b=vec3(.085,.13,.085),d=vec3(.17,.11,.09);
+  vec3 col=mix(a,mix(b,d,c*c),n1*n2);
+  col*=smoothstep(.9,.3,length(v-.5)*1.6)*.7+.3;
+  gl_FragColor=vec4(col,1.);
+}`;
+  function mk(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s;}
+  const pg=gl.createProgram();
+  gl.attachShader(pg,mk(gl.VERTEX_SHADER,vs));
+  gl.attachShader(pg,mk(gl.FRAGMENT_SHADER,fs));
+  gl.linkProgram(pg);gl.useProgram(pg);
+  const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const al=gl.getAttribLocation(pg,'a');
+  gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
+  const tl=gl.getUniformLocation(pg,'t'),ml=gl.getUniformLocation(pg,'m');
+  let mx=.5,my=.5,smx=.5,smy=.5;
+  document.addEventListener('mousemove',e=>{mx=e.clientX/innerWidth;my=e.clientY/innerHeight;});
+  let tf=0;
+  (function fr(){requestAnimationFrame(fr);tf+=.5;smx+=(mx-smx)*.03;smy+=(my-smy)*.03;gl.uniform1f(tl,tf);gl.uniform2f(ml,smx,smy);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);})();
+})();
 
-                return `
-                    <div class="text-center mb-16">
-                        <h3 class="text-5xl font-black mb-10 tracking-tighter uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">Seleção de Projetos</h3>
-                        <div class="flex flex-wrap justify-center gap-4 mb-12">
-                            <button onclick="showSection('portfolio', 'musica')" class="px-8 py-2 rounded-lg font-bold transition-all ${cat === 'musica' ? btnActive : btnInactive}">DIR. ARTE</button>
-                            <button onclick="showSection('portfolio', 'design')" class="px-8 py-2 rounded-lg font-bold transition-all ${cat === 'design' ? btnActive : btnInactive}">DESIGN</button>
-                            <button onclick="showSection('portfolio', 'foto')" class="px-8 py-2 rounded-lg font-bold transition-all ${cat === 'foto' ? btnActive : btnInactive}">FOTOGRAFIA</button>
-                            <button onclick="showSection('portfolio', 'webdev')" class="px-8 py-2 rounded-lg font-bold transition-all ${cat === 'webdev' ? btnActive : btnInactive}">WEB DEV</button>
-                        </div>
-                    </div>
-                    ${inner}`;
-            },
+/* TABS */
+function pfTab(id,btn){
+  document.querySelectorAll('.pf-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.pf-pane').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('pf-'+id).classList.add('on');
+  if(id==='projetos')loadDynProjects();
+}
 
-            contato: `
-                <div class="max-w-4xl mx-auto text-center space-y-16">
-                    <h3 class="text-7xl font-black text-cyan-400 uppercase italic">Contato</h3>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <a href="https://wa.me/+5562986369673" target="_blank" class="glass p-12 rounded-2xl flex flex-col items-center hover:bg-cyan-500/10 transition border-b-2 border-cyan-500">
-                            <i class="fab fa-whatsapp text-6xl text-cyan-400 mb-6"></i>
-                            <span class="text-2xl font-black uppercase">WhatsApp</span>
-                        </a>
-                        <a href="https://instagram.com/marcelio_venancio/" target="_blank" class="glass p-12 rounded-2xl flex flex-col items-center hover:bg-purple-500/10 transition border-b-2 border-purple-500">
-                            <i class="fab fa-instagram text-6xl text-purple-400 mb-6"></i>
-                            <span class="text-2xl font-black uppercase">Instagram</span>
-                        </a>
-                    </div>
-                </div>`
-        };
+/* DYNAMIC PROJECTS */
+async function loadDynProjects(){
+  const grid=document.getElementById('dyn-grid');
+  grid.innerHTML='<div class="dyn-empty">Carregando...</div>';
+  try{
+    const r=await fetch('https://raw.githubusercontent.com/goguenblouts/SiteMarcelio/main/projetos.json?t='+Date.now());
+    if(!r.ok)throw new Error();
+    const data=await r.json();
+    if(!data.length){grid.innerHTML='<div class="dyn-empty">Nenhum projeto adicionado ainda.</div>';return;}
+    grid.innerHTML=data.map(p=>`
+      <div class="dyn-item">
+        ${p.img?`<img src="${p.img}" alt="${p.title||''}">`:'<div style="width:100%;aspect-ratio:1;background:var(--surface)"></div>'}
+        <div class="dyn-over">
+          <div class="dyn-name">${p.title||''}</div>
+          ${p.desc?`<div class="dyn-desc">${p.desc}</div>`:''}
+          ${p.stack&&p.stack.length?`<div class="dyn-stack">${p.stack.map(s=>`<span class="dyn-stk">${s}</span>`).join('')}</div>`:''}
+          ${p.link?`<a href="${p.link}" target="_blank" class="dyn-link">Ver projeto →</a>`:''}
+        </div>
+      </div>`).join('');
+    grid.querySelectorAll('.dyn-item').forEach(el=>{
+      el.addEventListener('mouseenter',()=>document.body.classList.add('on-link'));
+      el.addEventListener('mouseleave',()=>document.body.classList.remove('on-link'));
+    });
+  } catch(e){
+    grid.innerHTML='<div class="dyn-empty" style="color:rgba(245,240,232,.2)">Erro ao carregar. Verifique se projetos.json existe no repositório.</div>';
+  }
+}
 
-        function showSection(id, sub = 'musica') {
-            const overlay = document.getElementById('overlay-content');
-            const dynamic = document.getElementById('dynamic-content');
-            const hero = document.getElementById('hero-section');
-            dynamic.innerHTML = typeof contents[id] === 'function' ? contents[id](sub) : contents[id];
-            overlay.classList.remove('hidden');
-            setTimeout(() => overlay.classList.add('opacity-100'), 10);
-            hero.style.opacity = '0';
-            document.body.style.overflow = 'hidden';
-            if(id === 'sobre') startAboutRotation();
-        }
+/* SCROLL REVEAL */
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
-        function closeSection() {
-            const overlay = document.getElementById('overlay-content');
-            const hero = document.getElementById('hero-section');
-            if(overlay.classList.contains('hidden')) return;
-            overlay.classList.remove('opacity-100');
-            setTimeout(() => {
-                overlay.classList.add('hidden');
-                hero.style.opacity = '1';
-                document.body.style.overflow = 'auto';
-                if (aboutInterval) clearInterval(aboutInterval);
-            }, 500);
-        }
+/* NAV SCROLL */
+window.addEventListener('scroll',()=>{document.getElementById('mainnav').classList.toggle('scrolled',scrollY>80);});
 
-        function toggleMobileMenu() {
-            const m = document.getElementById('mobile-menu');
-            m.classList.toggle('hidden');
-            m.classList.toggle('flex');
-        }
+/* ABOUT PHOTOS */
+(function(){
+  const photos=['https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/representativa.png?raw=true','https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img2.png?raw=true','https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img3.png?raw=true','https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img4.png?raw=true','https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img5.png?raw=true','https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img6.png?raw=true'];
+  let i=0;
+  setInterval(()=>{
+    const el=document.getElementById('about-img');
+    if(!el)return;
+    el.style.transition='opacity .7s';el.style.opacity=0;
+    setTimeout(()=>{i=(i+1)%photos.length;el.src=photos[i];el.style.opacity=1;},700);
+  },3500);
+})();
 
-        function startAboutRotation() {
-            if (aboutInterval) clearInterval(aboutInterval);
-            let idx = 0;
-            const photos = [
-                "https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/representativa.png?raw=true",
-                "https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img2.png?raw=true",
-                "https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img3.png?raw=true",
-                "https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img4.png?raw=true",
-                "https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img5.png?raw=true",
-                "https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img6.png?raw=true",
-                "https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img7.png?raw=true",
-                "https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img8.png?raw=true",
-                "https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img9.png?raw=true",
-                "https://github.com/Goguenblouts/SiteMarcelio/blob/main/Sobre/img10.png?raw=true"
-            ];
-            aboutInterval = setInterval(() => {
-                const img = document.getElementById('rotating-photo');
-                if(!img) return;
-                img.style.opacity = '0';
-                setTimeout(() => {
-                    idx = (idx + 1) % photos.length;
-                    img.src = photos[idx];
-                    img.style.opacity = '1';
-                }, 800);
-            }, 3000);
-        }
+/* SMOOTH SCROLL */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});
+});
 
-        window.onload = initThree;
-    </script>
+/* ABOUT GRID RESPONSIVE */
+(function(){
+  const g=document.getElementById('about-inner');
+  const ck=()=>{g.style.gridTemplateColumns=innerWidth<900?'1fr':'1fr 1.2fr';};
+  ck();window.addEventListener('resize',ck);
+})();
+</script>
 </body>
 </html>

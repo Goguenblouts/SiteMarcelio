@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel — Marcelio</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono&family=Syne:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0c0b0f;--surface:#141318;--border:rgba(245,240,232,.08);--ash:#f5f0e8;--dim:rgba(245,240,232,.35);--accent:#3d5a47;--danger:#c4603a}
+body{background:var(--bg);color:var(--ash);font-family:'Syne',sans-serif;min-height:100vh}
+
+#login{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100;flex-direction:column;gap:24px}
+#login h1{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
+#login input{background:var(--surface);border:1px solid var(--border);color:var(--ash);padding:12px 20px;font-family:'DM Mono',monospace;font-size:13px;width:280px;outline:none;letter-spacing:.1em}
+#login input:focus{border-color:rgba(245,240,232,.25)}
+#login button{background:var(--ash);color:var(--bg);border:none;padding:12px 32px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;width:280px;transition:opacity .2s}
+#login button:hover{opacity:.85}
+#login .err{font-family:'DM Mono',monospace;font-size:10px;color:var(--danger);letter-spacing:.1em;height:16px}
+#app{display:none}
+
+header{padding:24px 40px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+header h1{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--dim)}
+.hbtns{display:flex;gap:12px}
+.hbtn{background:none;border:1px solid var(--border);color:var(--dim);padding:8px 18px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.hbtn:hover{border-color:rgba(245,240,232,.3);color:var(--ash)}
+.hbtn.primary{background:var(--ash);color:var(--bg);border-color:var(--ash)}
+.hbtn.primary:hover{opacity:.85}
+.hbtn.danger{border-color:rgba(196,96,58,.3);color:var(--danger)}
+.hbtn.danger:hover{border-color:var(--danger)}
+
+main{display:grid;grid-template-columns:1fr 380px;gap:1px;background:var(--border);min-height:calc(100vh - 65px)}
+
+/* FORM */
+.form-panel{background:var(--bg);padding:40px}
+.form-panel h2{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--dim);margin-bottom:32px}
+.field{margin-bottom:24px}
+.field label{display:block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.field input,.field textarea,.field select{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--ash);padding:12px 16px;font-family:'DM Mono',monospace;font-size:12px;outline:none;transition:border-color .2s;resize:none}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(245,240,232,.25)}
+.field select option{background:var(--bg)}
+.field textarea{height:80px;line-height:1.6}
+.img-preview{margin-top:12px;width:100%;aspect-ratio:16/9;background:var(--surface);border:1px solid var(--border);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.img-preview img{width:100%;height:100%;object-fit:cover;display:none}
+.img-preview span{font-family:'DM Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:.1em}
+.form-actions{display:flex;gap:12px;margin-top:8px}
+.status{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);margin-top:16px;min-height:20px;letter-spacing:.1em}
+.status.ok{color:#3d5a47}
+.status.err{color:var(--danger)}
+
+/* LIST */
+.list-panel{background:var(--surface);padding:32px 28px}
+.list-panel h2{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--dim);margin-bottom:24px}
+.proj-list{display:flex;flex-direction:column;gap:2px}
+.proj-item{background:var(--bg);padding:16px;display:flex;gap:12px;align-items:flex-start;border:1px solid transparent;transition:border-color .2s;cursor:pointer}
+.proj-item:hover{border-color:var(--border)}
+.proj-item.editing{border-color:rgba(245,240,232,.2)}
+.proj-thumb{width:56px;height:40px;object-fit:cover;flex-shrink:0;background:var(--surface);display:block}
+.proj-thumb-ph{width:56px;height:40px;background:var(--surface);flex-shrink:0}
+.proj-info{flex:1;min-width:0}
+.proj-name{font-size:13px;font-weight:700;color:var(--ash);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proj-cat{font-family:'DM Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase}
+.proj-actions{display:flex;gap:6px;flex-shrink:0}
+.pa{background:none;border:1px solid var(--border);color:var(--dim);padding:4px 8px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.pa:hover{border-color:rgba(245,240,232,.3);color:var(--ash)}
+.pa.del:hover{border-color:var(--danger);color:var(--danger)}
+.empty{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:.1em;text-align:center;padding:40px 0}
+
+/* TOKEN CONFIG */
+#token-panel{position:fixed;inset:0;background:rgba(12,11,15,.95);z-index:200;display:none;align-items:center;justify-content:center}
+#token-panel.open{display:flex}
+.token-box{background:var(--surface);border:1px solid var(--border);padding:40px;width:480px}
+.token-box h2{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--dim);margin-bottom:24px}
+.token-box p{font-family:'DM Mono',monospace;font-size:10px;line-height:1.8;color:var(--dim);margin-bottom:20px;letter-spacing:.05em}
+.token-box input{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--ash);padding:12px 16px;font-family:'DM Mono',monospace;font-size:11px;outline:none;margin-bottom:16px}
+.token-box input:focus{border-color:rgba(245,240,232,.25)}
+.token-actions{display:flex;gap:10px}
+
+@media(max-width:800px){
+  main{grid-template-columns:1fr}
+  .list-panel{border-top:1px solid var(--border)}
+  header{padding:20px 24px}
+  .form-panel{padding:28px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <h1>Painel // Marcelio</h1>
+  <input type="password" id="pwd" placeholder="senha" onkeydown="if(event.key==='Enter')doLogin()">
+  <div class="err" id="lerr"></div>
+  <button onclick="doLogin()">Entrar</button>
+</div>
+
+<!-- TOKEN CONFIG -->
+<div id="token-panel">
+  <div class="token-box">
+    <h2>Configurar Token GitHub</h2>
+    <p>Gere um Personal Access Token com permissão <strong style="color:var(--ash)">repo</strong> em:<br>GitHub → Settings → Developer Settings → Tokens (classic)</p>
+    <input type="password" id="tk-input" placeholder="ghp_...">
+    <div class="token-actions">
+      <button class="hbtn primary" onclick="saveToken()">Salvar</button>
+      <button class="hbtn" onclick="document.getElementById('token-panel').classList.remove('open')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header>
+    <h1>Painel // Marcelio Venancio</h1>
+    <div class="hbtns">
+      <button class="hbtn" onclick="document.getElementById('token-panel').classList.add('open')">Token GitHub</button>
+      <button class="hbtn primary" id="save-btn" onclick="saveProjects()">Publicar</button>
+      <button class="hbtn danger" onclick="logout()">Sair</button>
+    </div>
+  </header>
+  <main>
+    <div class="form-panel">
+      <h2 id="form-title">Novo Projeto</h2>
+      <div class="field">
+        <label>Título</label>
+        <input type="text" id="f-title" placeholder="Nome do projeto">
+      </div>
+      <div class="field">
+        <label>Categoria</label>
+        <select id="f-cat">
+          <option value="arte">Direção de Arte</option>
+          <option value="design">Design</option>
+          <option value="foto">Fotografia</option>
+          <option value="web">Web Dev</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Descrição</label>
+        <textarea id="f-desc" placeholder="Descrição breve do projeto..."></textarea>
+      </div>
+      <div class="field">
+        <label>URL da Imagem de Capa (GitHub raw)</label>
+        <input type="url" id="f-img" placeholder="https://github.com/..." oninput="previewImg()">
+        <div class="img-preview" id="img-prev">
+          <img id="prev-img" alt="">
+          <span id="prev-ph">Cole a URL da imagem</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Link do Projeto (opcional)</label>
+        <input type="url" id="f-link" placeholder="https://...">
+      </div>
+      <div class="field">
+        <label>Stack / Tags (separadas por vírgula)</label>
+        <input type="text" id="f-stack" placeholder="Next.js, Tailwind, Vercel">
+      </div>
+      <div class="form-actions">
+        <button class="hbtn primary" onclick="addOrUpdate()">Salvar Projeto</button>
+        <button class="hbtn" onclick="clearForm()">Limpar</button>
+      </div>
+      <div class="status" id="status"></div>
+    </div>
+    <div class="list-panel">
+      <h2>Projetos <span id="proj-count" style="color:rgba(245,240,232,.2)">— 0</span></h2>
+      <div class="proj-list" id="proj-list">
+        <div class="empty">Nenhum projeto ainda.</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const OWNER='goguenblouts';
+const REPO='SiteMarcelio';
+const FILE='projetos.json';
+const BRANCH='main';
+const PASS='marcelio2024'; // troque aqui
+
+let projects=[];
+let editingId=null;
+let fileSha=null;
+
+/* LOGIN */
+function doLogin(){
+  const v=document.getElementById('pwd').value;
+  if(v===PASS){
+    document.getElementById('login').style.display='none';
+    document.getElementById('app').style.display='block';
+    loadProjects();
+  } else {
+    document.getElementById('lerr').textContent='Senha incorreta.';
+    setTimeout(()=>document.getElementById('lerr').textContent='',2000);
+  }
+}
+function logout(){
+  document.getElementById('app').style.display='none';
+  document.getElementById('login').style.display='flex';
+  document.getElementById('pwd').value='';
+}
+
+/* TOKEN */
+function getToken(){return localStorage.getItem('mv_ghtoken')||'';}
+function saveToken(){
+  const t=document.getElementById('tk-input').value.trim();
+  if(!t)return;
+  localStorage.setItem('mv_ghtoken',t);
+  document.getElementById('token-panel').classList.remove('open');
+  setStatus('Token salvo.','ok');
+}
+
+/* GITHUB API */
+async function ghGet(path){
+  const r=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`,{
+    headers:{Authorization:`token ${getToken()}`,Accept:'application/vnd.github.v3+json'}
+  });
+  return r.json();
+}
+async function ghPut(path,content,sha,msg){
+  const r=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`,{
+    method:'PUT',
+    headers:{Authorization:`token ${getToken()}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify({message:msg,content:btoa(unescape(encodeURIComponent(content))),sha:sha||undefined,branch:BRANCH})
+  });
+  return r.json();
+}
+
+/* LOAD */
+async function loadProjects(){
+  setStatus('Carregando...','');
+  try{
+    const data=await ghGet(FILE);
+    if(data.content){
+      fileSha=data.sha;
+      const json=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+      projects=JSON.parse(json);
+    }
+  } catch(e){
+    projects=[];
+  }
+  renderList();
+  setStatus('','');
+}
+
+/* SAVE */
+async function saveProjects(){
+  if(!getToken()){
+    document.getElementById('token-panel').classList.add('open');
+    return;
+  }
+  setStatus('Publicando...','');
+  document.getElementById('save-btn').textContent='Publicando...';
+  try{
+    const content=JSON.stringify(projects,null,2);
+    const res=await ghPut(FILE,content,fileSha,'update: projetos.json via painel');
+    if(res.content){
+      fileSha=res.content.sha;
+      setStatus('✓ Publicado! Vercel rebuilda em ~30s.','ok');
+    } else {
+      setStatus('Erro: '+(res.message||'tente novamente'),'err');
+    }
+  } catch(e){
+    setStatus('Erro de conexão.','err');
+  }
+  document.getElementById('save-btn').textContent='Publicar';
+}
+
+/* FORM */
+function previewImg(){
+  const url=document.getElementById('f-img').value.trim();
+  const img=document.getElementById('prev-img');
+  const ph=document.getElementById('prev-ph');
+  if(url){img.src=url;img.style.display='block';ph.style.display='none';}
+  else{img.style.display='none';ph.style.display='block';}
+}
+
+function addOrUpdate(){
+  const title=document.getElementById('f-title').value.trim();
+  const cat=document.getElementById('f-cat').value;
+  const desc=document.getElementById('f-desc').value.trim();
+  const img=document.getElementById('f-img').value.trim();
+  const link=document.getElementById('f-link').value.trim();
+  const stack=document.getElementById('f-stack').value.split(',').map(s=>s.trim()).filter(Boolean);
+  if(!title){setStatus('Título obrigatório.','err');return;}
+  if(editingId){
+    const i=projects.findIndex(p=>p.id===editingId);
+    if(i>-1)projects[i]={...projects[i],title,cat,desc,img,link,stack};
+    editingId=null;
+    document.getElementById('form-title').textContent='Novo Projeto';
+  } else {
+    projects.push({id:Date.now().toString(),title,cat,desc,img,link,stack,order:projects.length});
+  }
+  renderList();
+  clearForm();
+  setStatus('Projeto salvo. Clique em Publicar para enviar ao GitHub.','ok');
+}
+
+function clearForm(){
+  document.getElementById('f-title').value='';
+  document.getElementById('f-desc').value='';
+  document.getElementById('f-img').value='';
+  document.getElementById('f-link').value='';
+  document.getElementById('f-stack').value='';
+  document.getElementById('f-cat').value='arte';
+  document.getElementById('prev-img').style.display='none';
+  document.getElementById('prev-ph').style.display='block';
+  editingId=null;
+  document.getElementById('form-title').textContent='Novo Projeto';
+}
+
+function editProject(id){
+  const p=projects.find(x=>x.id===id);
+  if(!p)return;
+  editingId=id;
+  document.getElementById('f-title').value=p.title||'';
+  document.getElementById('f-desc').value=p.desc||'';
+  document.getElementById('f-img').value=p.img||'';
+  document.getElementById('f-link').value=p.link||'';
+  document.getElementById('f-stack').value=(p.stack||[]).join(', ');
+  document.getElementById('f-cat').value=p.cat||'arte';
+  document.getElementById('form-title').textContent='Editar Projeto';
+  previewImg();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function deleteProject(id){
+  if(!confirm('Deletar este projeto?'))return;
+  projects=projects.filter(p=>p.id!==id);
+  renderList();
+  setStatus('Deletado. Clique em Publicar para salvar.','ok');
+}
+
+function moveUp(id){
+  const i=projects.findIndex(p=>p.id===id);
+  if(i>0){[projects[i-1],projects[i]]=[projects[i],projects[i-1]];}
+  renderList();
+}
+function moveDown(id){
+  const i=projects.findIndex(p=>p.id===id);
+  if(i<projects.length-1){[projects[i+1],projects[i]]=[projects[i],projects[i+1]];}
+  renderList();
+}
+
+function renderList(){
+  const list=document.getElementById('proj-list');
+  document.getElementById('proj-count').textContent='— '+projects.length;
+  if(!projects.length){list.innerHTML='<div class="empty">Nenhum projeto ainda.</div>';return;}
+  const cats={arte:'Dir. Arte',design:'Design',foto:'Fotografia',web:'Web Dev'};
+  list.innerHTML=projects.map((p,i)=>`
+    <div class="proj-item${editingId===p.id?' editing':''}">
+      ${p.img?`<img class="proj-thumb" src="${p.img}" alt="">`:`<div class="proj-thumb-ph"></div>`}
+      <div class="proj-info">
+        <div class="proj-name">${p.title||'Sem título'}</div>
+        <div class="proj-cat">${cats[p.cat]||p.cat}</div>
+      </div>
+      <div class="proj-actions">
+        ${i>0?`<button class="pa" onclick="moveUp('${p.id}')">↑</button>`:''}
+        ${i<projects.length-1?`<button class="pa" onclick="moveDown('${p.id}')">↓</button>`:''}
+        <button class="pa" onclick="editProject('${p.id}')">Editar</button>
+        <button class="pa del" onclick="deleteProject('${p.id}')">Del</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setStatus(msg,type){
+  const s=document.getElementById('status');
+  s.textContent=msg;
+  s.className='status'+(type?' '+type:'');
+}
+</script>
+</body>
+</html>
